@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.1.10",
     "awesome-react-icons": "^1.4.8",
     "bootstrap": "^5.0.0-beta1",
+    "chartjs": "^0.3.24",
     "electron-is-dev": "^1.2.0",
     "electron-reload": "^1.5.0",
     "electron-settings": "^3.0.7",
@@ -17,6 +18,7 @@
     "react-dom": "^17.0.1",
     "react-minimal-side-navigation": "^1.8.0",
     "react-router-dom": "^5.2.0",
+    "react-script-tag": "^1.1.2",
     "react-scripts": "4.0.1",
     "txml": "^4.0.1",
     "web-vitals": "^0.2.4",
@@ -70,6 +72,7 @@
     "electron": "^11.4.6",
     "electron-builder": "^22.9.1",
     "prettier": "^2.2.1",
-    "wait-on": "^5.2.1"
+    "wait-on": "^5.2.1",
+    "chartjs": "^0.3.24"
   }
 }
