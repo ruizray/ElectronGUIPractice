@@ -6,34 +6,141 @@ import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 class Stuff extends Component {
     componentDidMount() {
 
-       
+
     }
 
     constructor() {
         super();
+
         this.state = {
-            active: true,
-           lines: ""
+            lines: [],
+            graphStart: "",
+            nextGraph: "",
+            previousGraph: "",
+            dataSets: [],
+            sendGraph: [],
+            graphs: 0,
+            graphPos: 0,
         }
-
     }
-    isOpen = () => {
-        console.log("Test")
-        // this.setState({ active: !this.state.active })
+    
+    enableButtons = (button) => {
+        button.disabled = false;
+        console.log(button)
     }
-
     fileSelectHandler = async (e) => {
+        e.preventDefault();
         console.log(e)
         var reader = new FileReader();
         var file = e.target.files[0];
-        var lines;
-        reader.onload = function (e)  {
-             lines = e.target.result.split('\n');
-            this.state.lines = lines;
+        var liness;
+
+        reader.onload = (e) => {
+            liness = e.target.result.split('\n');
+            this.setState({ lines: liness })
+            this.setState({ graphStart: "true" })
+            this.setState({ nextGraph: "true" })
+            console.log(liness)
+
         };
+
+        console.log(this.state.lines)
         reader.readAsText(file);
-        console.log(lines)
     }
+
+    graphStart = (e) => {
+        if (this.checkBoxes(document.querySelectorAll(".chartType:checked")) == false) {
+            return;
+        }
+        this.CreateGraphs()
+        console.log(this.state.dataSets)
+        var firstGraph = this.state.dataSets[this.state.graphPos].data;
+        this.wrapState(firstGraph)
+    }
+
+    graphNext= (e) => {
+        var temp = this.state.graphPos;
+        temp++;
+        console.log(temp)
+        console.log(this.state.dataSets[0].data)
+        this.setState({graphPos: temp})
+        var firstGraph = this.state.dataSets[this.state.graphPos].data;
+        this.wrapState(firstGraph)
+    }
+
+    wrapState = (state) => {
+        let
+            data = {
+                datasets: [{
+                    data: state,
+                    label: '',
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+        this.setState({ sendGraph: data });
+    }
+
+
+
+    CreateGraphs = () => {
+        var lines = this.state.lines
+        console.log(lines)
+        this.state.lines.shift();
+        this.state.lines.shift();
+        this.state.lines.shift();
+        this.state.lines.shift();
+        while (this.state.lines.length != 0) {
+            var groupNum = this.state.lines.shift();
+            var group = this.state.lines.splice(0, groupNum);
+            this.readLines(group)
+            this.state.lines.shift();
+            this.state.graphs = this.state.graphs + 1;
+        }
+    }
+    readLines = (group) => {
+        var line;
+        var tempdata = { data: [], label: "", sortedData: [] }
+
+        for (var i = 0; i < group.length; i++) {
+            line = group[i].split(',');
+            tempdata.data.push({ x: line[1] + ", " + line[2], y: line[3] })
+        }
+        tempdata.label = line[0]
+        var temp = this.state.dataSets.push(tempdata)
+        this.setState({ dataSets: temp })
+        console.log(this.state.dataSets[this.state.graphs])
+    }
+
+    checkBoxes = (boxes) => {
+        if (boxes.length > 1) {
+            alert("Too many boxes checked");
+            return false;
+        } else if (boxes.length == 0) {
+            alert("No boxes checked!");
+            return false;
+        }
+        return true
+    }
+
+
+
     render() {
         //let btn_class = this.state.isOpen ? "button-graph" : "button-graph is-open";
 
@@ -63,8 +170,8 @@ class Stuff extends Component {
                             <div className="demo-box">
                                 <div style={{ marginBottom: '20px' }} className="row">
                                     <div className="col-md-12">
-                                        <Graph />
-                                
+                                        <Graph data={this.state.sendGraph} />
+
                                     </div>
 
                                 </div>
@@ -84,7 +191,7 @@ class Stuff extends Component {
                                 <h5>Sort Graph</h5>
                                 <div id="sortGraphBox" className="row">
                                     <div className="col-md-3">
-                                        <input type="checkbox" id="sortedBox" name="sortedBox" value="false"></input>
+                                        <input type="checkbox" id="sortedBox" name="sortedBox" onChange={(e) => this.checkBoxes(e)} value="false"></input>
                                         <label htmlFor="sortedBox"> Sorted</label>
                                     </div>
 
@@ -110,7 +217,7 @@ class Stuff extends Component {
                                 <h5>Graph Controls</h5>
                                 <div id="GraphControls" style={{ marginBottom: '10px' }} className="row">
                                     <div className="col-md-12">
-                                        <button style={{ width: '100%' }} className="demo-button button-group" id="graphStart" disabled>Start Graph</button>
+                                        <button style={{ width: '100%' }} className="demo-button button-group" onClick={(e) => this.graphStart(e)} id="graphStart" disabled={!this.state.graphStart}>Start Graph</button>
                                     </div>
                                 </div>
                                 <div style={{ marginBottom: '10px' }} className="row">
@@ -121,7 +228,7 @@ class Stuff extends Component {
                                         disabled>Sort
               Graph</button></div>
                                     <div className="col-md-4">
-                                        <button style={{ width: '100%' }} className="demo-button button-group" id="nextGraph" disabled>Next Graph</button>
+                                        <button style={{ width: '100%' }} className="demo-button button-group" onClick={(e) => this.graphNext(e)} id="nextGraph" disabled={!this.state.nextGraph}>Next Graph</button>
                                     </div>
                                 </div>
 

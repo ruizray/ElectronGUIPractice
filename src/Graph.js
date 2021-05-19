@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Chart from "chartjs";
+import equal from 'fast-deep-equal'
 
 
 import { Line } from 'react-chartjs-2';
@@ -59,11 +60,19 @@ class Graph extends Component {
 
 
     }
-    
+    componentDidUpdate(prevProps) {
+        console.log(this.props, prevProps)
+        if(!equal(this.props.data, prevProps.data)) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+        {
+          this.setState({data:this.props.data})
+          console.log(this.state)
+        }
+      } 
+      
     render() {
         return (
             <div >
-           
+
                 <Line data={this.state.data} options={this.state.options} />
             </div>
             
