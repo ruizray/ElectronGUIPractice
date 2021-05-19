@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import Chart from "chartjs";
 import equal from 'fast-deep-equal'
-
-
 import { Line } from 'react-chartjs-2';
 
 

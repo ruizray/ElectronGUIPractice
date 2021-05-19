@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 
 
-import Main from '../Main'
+import Vidly from '../Vidly'
 import Stuff from '../Stuff'
 class Sidenav extends Component {
 
@@ -66,7 +66,7 @@ class Sidenav extends Component {
           </nav>
 
           <div className="content js-content">
-            <Route exact path="/" component={Main} />
+            <Route exact path="/" component={Vidly} />
             <Route path="/stuff" component={Stuff} />
           </div>
         </HashRouter>

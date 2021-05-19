@@ -1,17 +1,12 @@
 import React, { Component } from "react";
-import Graph from './Graph'
-import Chart from 'chartjs'
+import Graph from './components/Graph'
 
-import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
+
 class Stuff extends Component {
-    componentDidMount() {
-
-
-    }
-
+    
     constructor() {
         super();
-
+        
         this.state = {
             lines: [],
             graphStart: "",
@@ -44,7 +39,7 @@ class Stuff extends Component {
 
         };
 
-        console.log(this.state.lines)
+
         reader.readAsText(file);
     }
 
@@ -52,19 +47,27 @@ class Stuff extends Component {
         if (this.checkBoxes(document.querySelectorAll(".chartType:checked")) == false) {
             return;
         }
+
+        // settings.set('graph', {
+        //     state: this.state    ,
+        // })
+        
         this.CreateGraphs()
-        console.log(this.state.dataSets)
+        console.log(this.state)
         var firstGraph = this.state.dataSets[this.state.graphPos].data;
+        console.log(firstGraph)
         this.wrapState(firstGraph)
+        console.log(this.state)
     }
 
     graphNext= (e) => {
+        console.log(this.state)
         var temp = this.state.graphPos;
         temp++;
-        console.log(temp)
-        console.log(this.state.dataSets[0].data)
+        console.log(this.state)
+
         this.setState({graphPos: temp})
-        var firstGraph = this.state.dataSets[this.state.graphPos].data;
+        var firstGraph = this.state.dataSets[temp].data;
         this.wrapState(firstGraph)
     }
 
@@ -111,7 +114,8 @@ class Stuff extends Component {
             var group = this.state.lines.splice(0, groupNum);
             this.readLines(group)
             this.state.lines.shift();
-            this.state.graphs = this.state.graphs + 1;
+            let temp = this.state.graphs + 1;
+            this.setState({graphs: temp});
         }
     }
     readLines = (group) => {
@@ -124,8 +128,9 @@ class Stuff extends Component {
         }
         tempdata.label = line[0]
         var temp = this.state.dataSets.push(tempdata)
+        console.log(temp)
         this.setState({ dataSets: temp })
-        console.log(this.state.dataSets[this.state.graphs])
+      
     }
 
     checkBoxes = (boxes) => {
