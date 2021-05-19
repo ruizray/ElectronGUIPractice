@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-
 import Sidenav from "./components/Sidenav.jsx";
 
 import './css/nav.css'
@@ -15,6 +14,7 @@ import './css/bootstrap-grid.css'
 
 
 ReactDOM.render(
+    
     <React.StrictMode>
         <Sidenav />
     </React.StrictMode>,

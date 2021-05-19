@@ -1,4 +1,4 @@
-import 'chartjs'
+
 let ctx = document.getElementById('myChart');
 
 class config {
@@ -245,4 +245,3 @@ function checkBoxes(boxes) {
     }
     return true
 }
-

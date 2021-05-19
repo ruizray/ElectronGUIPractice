@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ScriptTag from 'react-script-tag'
+
 import {
 
   Route,
@@ -7,24 +7,11 @@ import {
   HashRouter
 } from 'react-router-dom'
 
-import Itemcat from './itemCat'
+
 import Main from '../Main'
 import Stuff from '../Stuff'
 class Sidenav extends Component {
-  state = {
-    categories: [
-      {
-        header: 'Menu Sample',
-        category: 'windows',
-        items: ['Graph', 'Crash-Hang']
-      },
-      { header: 'Mapper', category: 'mapper', items: ['Mapper'] }
-    ],
 
-  
-  }
-
- 
   render() {
 
    
@@ -32,7 +19,7 @@ class Sidenav extends Component {
       <React.Fragment>
         <HashRouter>
           <nav className="nav js-nav">
-            <header class="nav-header">
+            <header className="nav-header">
               <h1 className="nav-title">
                 Electron <strong>API Demos</strong>
               </h1>
@@ -45,7 +32,7 @@ class Sidenav extends Component {
                 type="button" 
                 id="button-graph"
                 data-section="graph"
-                class="nav-button"
+                className="nav-button"
               >
                 Open <em>Graph</em>
               </button>
@@ -54,32 +41,26 @@ class Sidenav extends Component {
               type="button"
               id="button-crash-hang"
               data-section="crash-hang"
-              class="nav-button"
+              className="nav-button"
             >
               Handling window <em>crashes and hangs</em>
             </button></NavLink>
-            {this.state.categories.map(category => (
-              <Itemcat
-                header={category.header}
-                keys={category.category}
-                values={category.items}
-              />
-            ))}
-            <footer class="nav-footer">
+            
+            <footer className="nav-footer">
               <button
                 type="button"
                 id="button-about"
                 data-modal="about"
-                class="nav-footer-button"
+                className="nav-footer-button"
               >
                 About
               </button>
               <a
-                class="nav-footer-logo"
+                className="nav-footer-logo"
                 href="https://github.com"
                 aria-label="Homepage"
               >
-                <svg class="nav-footer-icon"></svg>
+                <svg className="nav-footer-icon"></svg>
               </a>
             </footer>
           </nav>

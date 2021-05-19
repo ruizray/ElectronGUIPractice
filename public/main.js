@@ -3,7 +3,7 @@ const { app, BrowserWindow } = require('electron')
 const electron =require("electron")
 const path = require('path')
 const isDev =require('electron-is-dev')
-require('chartjs')
+
 const glob = require('glob')
 const txml = require('txml');
 
