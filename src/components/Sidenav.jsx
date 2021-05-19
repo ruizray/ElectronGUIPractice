@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 
 
-import Vidly from '../Vidly'
+import Movies from './Movies'
 import Stuff from '../Stuff'
 class Sidenav extends Component {
 
@@ -30,11 +30,11 @@ class Sidenav extends Component {
             <NavLink style={{textDecoration:'none'}} exact to="/">
               <button
                 type="button" 
-                id="button-graph"
-                data-section="graph"
+                id="button-movies"
+                data-section="movies"
                 className="nav-button"
               >
-                Open <em>Graph</em>
+                Open <em>Movies App</em>
               </button>
             </NavLink>
             <NavLink style={{textDecoration:'none'}} to ="/stuff"><button
@@ -66,7 +66,7 @@ class Sidenav extends Component {
           </nav>
 
           <div className="content js-content">
-            <Route exact path="/" component={Vidly} />
+            <Route exact path="/" component={Movies} />
             <Route path="/stuff" component={Stuff} />
           </div>
         </HashRouter>
