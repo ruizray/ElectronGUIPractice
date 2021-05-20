@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Sidenav from "./components/Sidenav.jsx";
 
 import './css/nav.css'
 import './index.css'
@@ -11,12 +10,14 @@ import './css/variables.css'
 import './css/global.css'
 import './css/print.css'
 import './css/bootstrap-grid.css'
+import App from "./components/App.jsx";
+import { HashRouter } from "react-router-dom";
+
 
 
 ReactDOM.render(
-    
-    <React.StrictMode>
-        <Sidenav />
-    </React.StrictMode>,
+    <HashRouter>
+        <App />
+        </HashRouter>,
     document.getElementById("root")
 );

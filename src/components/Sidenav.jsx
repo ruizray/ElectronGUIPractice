@@ -9,15 +9,15 @@ import {
 
 
 import Movies from './Movies'
-import Stuff from '../Stuff'
-class Sidenav extends Component {
+import Stuff from './Stuff'
+import Counter from './Counters'
+const Sidenav = () => {
 
-  render() {
 
    
     return (
       <React.Fragment>
-        <HashRouter>
+
           <nav className="nav js-nav">
             <header className="nav-header">
               <h1 className="nav-title">
@@ -27,7 +27,7 @@ class Sidenav extends Component {
             <div className="nav-item u-category-windows">
               <h5 className="nav-category">Menu Sample</h5>
             </div>
-            <NavLink style={{textDecoration:'none'}} exact to="/">
+            <NavLink style={{textDecoration:'none'}} to="/">
               <button
                 type="button" 
                 id="button-movies"
@@ -37,6 +37,14 @@ class Sidenav extends Component {
                 Open <em>Movies App</em>
               </button>
             </NavLink>
+            <NavLink style={{textDecoration:'none'}} to ="/counter"><button
+              type="button"
+              id="button-counter"
+              data-section="counter"
+              className="nav-button"
+            >
+              Open <em> counter example</em>
+            </button></NavLink>
             <NavLink style={{textDecoration:'none'}} to ="/stuff"><button
               type="button"
               id="button-crash-hang"
@@ -64,17 +72,17 @@ class Sidenav extends Component {
               </a>
             </footer>
           </nav>
-
           <div className="content js-content">
-            <Route exact path="/" component={Movies} />
-            <Route path="/stuff" component={Stuff} />
-          </div>
-        </HashRouter>
-        
+                 
+                 
+          <Route exact path="/" component={Movies} />
+                    <Route path="/stuff" component={Stuff} />
+                    <Route path="/counter" component={Counter} />
+        </div>
       </React.Fragment>
       
     )
-  }
+  
 }
 
 export default Sidenav

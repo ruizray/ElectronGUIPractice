@@ -1,13 +1,21 @@
 import React, { Component } from "react";
-import Graph from './components/Graph'
-
-
+import Graph from './Graph'
+import Checkbox from './Checkbox'
+import {readFileInput} from '../scripts/readGraphFile'
 class Stuff extends Component {
-    
+
     constructor() {
         super();
-        
+
         this.state = {
+            sortedCheckbox:{type: '', label : 'Sorted', id: 'sortGraph', active: false},
+
+            typeCheckboxes: [
+                {type: 'bar', label : 'Bar Chart', id: 'chartTypeBar', active: false },
+                {type: 'line', label : 'Line Chart', id: 'chartTypeLine', active: false }
+            ],
+
+            chartType:'',
             lines: [],
             graphStart: "",
             nextGraph: "",
@@ -18,40 +26,23 @@ class Stuff extends Component {
             graphPos: 0,
         }
     }
-    
+
     enableButtons = (button) => {
         button.disabled = false;
         console.log(button)
     }
-    fileSelectHandler = async (e) => {
-        e.preventDefault();
-        console.log(e)
-        var reader = new FileReader();
-        var file = e.target.files[0];
-        var liness;
-
-        reader.onload = (e) => {
-            liness = e.target.result.split('\n');
-            this.setState({ lines: liness })
-            this.setState({ graphStart: "true" })
-            this.setState({ nextGraph: "true" })
-            console.log(liness)
-
-        };
-
-
-        reader.readAsText(file);
+    handleFileInput = async (e) => {
+        let lines = await readFileInput(e);
+        this.setState({lines})
     }
 
     graphStart = (e) => {
-        if (this.checkBoxes(document.querySelectorAll(".chartType:checked")) == false) {
-            return;
-        }
+ 
 
         // settings.set('graph', {
         //     state: this.state    ,
         // })
-        
+
         this.CreateGraphs()
         console.log(this.state)
         var firstGraph = this.state.dataSets[this.state.graphPos].data;
@@ -60,13 +51,13 @@ class Stuff extends Component {
         console.log(this.state)
     }
 
-    graphNext= (e) => {
+    graphNext = (e) => {
         console.log(this.state)
         var temp = this.state.graphPos;
         temp++;
         console.log(this.state)
 
-        this.setState({graphPos: temp})
+        this.setState({ graphPos: temp })
         var firstGraph = this.state.dataSets[temp].data;
         this.wrapState(firstGraph)
     }
@@ -115,7 +106,7 @@ class Stuff extends Component {
             this.readLines(group)
             this.state.lines.shift();
             let temp = this.state.graphs + 1;
-            this.setState({graphs: temp});
+            this.setState({ graphs: temp });
         }
     }
     readLines = (group) => {
@@ -130,21 +121,13 @@ class Stuff extends Component {
         var temp = this.state.dataSets.push(tempdata)
         console.log(temp)
         this.setState({ dataSets: temp })
-      
-    }
 
-    checkBoxes = (boxes) => {
-        if (boxes.length > 1) {
-            alert("Too many boxes checked");
-            return false;
-        } else if (boxes.length == 0) {
-            alert("No boxes checked!");
-            return false;
-        }
-        return true
     }
 
 
+    handleTypeCheckboxClick = checkbox => {
+        console.log(checkbox)
+    }
 
     render() {
         //let btn_class = this.state.isOpen ? "button-graph" : "button-graph is-open";
@@ -182,12 +165,12 @@ class Stuff extends Component {
                                 </div>
 
                                 <div id="fileSelectorContainer" style={{ marginBottom: '20px', marginLeft: '2px' }} className="row">
-                                    <input type="file" id="file-selector" onChange={(e) => this.fileSelectHandler(e)}></input>
+                                    <input type="file" id="file-selector" onChange={(e) => this.handleFileInput(e)}></input>
                                 </div>
 
                                 <div style={{ marginBottom: '10px' }, { marginLeft: '2px' }} id="graphTitleContainer" className="row">
-                                    <label style={{ marginright: '10px' }} htmlFor="graphTitle">Graph Title: </label>
-                                    <input type="text" id="graphTitle" name="graphTitle" value=""></input>
+                                    <label htmlFor="graphTitle">Graph Title: </label>
+                                    <input  style={{ marginLeft: 10 }} type="text" id="graphTitle" name="graphTitle" defaultValue=""></input>
                                 </div>
 
 
@@ -196,22 +179,23 @@ class Stuff extends Component {
                                 <h5>Sort Graph</h5>
                                 <div id="sortGraphBox" className="row">
                                     <div className="col-md-3">
-                                        <input type="checkbox" id="sortedBox" name="sortedBox" onChange={(e) => this.checkBoxes(e)} value="false"></input>
-                                        <label htmlFor="sortedBox"> Sorted</label>
-                                    </div>
 
+                                        <Checkbox key={this.state.sortedCheckbox.id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.sortedCheckbox} />
+                                        {/* <input type="checkbox" id="sortedBox" name="sortedBox" onChange={(e) => this.checkBoxes(e)} value="false"></input>
+                                        <label htmlFor="sortedBox"> Sorted</label>
+                                     */}
+
+                                    </div>
                                 </div>
 
 
                                 <h5>Chart Type</h5>
                                 <div id="chartTypeBoxes" style={{ marginBottom: '10px' }} className="row">
                                     <div className="col-md-3">
-                                        <input type="checkbox" className="chartType" id="barBox" ></input>
-                                        <label htmlFor="barBox">Bar Chart</label>
+                                    <Checkbox key={this.state.typeCheckboxes[0].id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.typeCheckboxes[0]} />
                                     </div>
                                     <div className="col-md-3">
-                                        <input type="checkbox" className="chartType" id="lineBox" ></input>
-                                        <label htmlFor="barBox">Line Chart</label>
+                                    <Checkbox key={this.state.typeCheckboxes[1].id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.typeCheckboxes[1]} />
                                     </div>
                                     <div className="col-md-3">
                                         <input type="checkbox" className="chartType" id="pieBox" ></input>
