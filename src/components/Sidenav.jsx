@@ -11,6 +11,7 @@ import Movies from './Movies'
 import Stuff from './Stuff'
 import Counter from './Counters'
 import LoginForm from './LoginForm';
+import Analytics from './Analytics'
 const Sidenav = () => {
 
 
@@ -62,6 +63,15 @@ const Sidenav = () => {
             >
               Open <em>Login Form</em>
             </button></NavLink>
+
+            <NavLink style={{textDecoration:'none'}} to ="/analytics"><button
+              type="button"
+              id="button-crash-hang"
+              data-section="crash-hang"
+              className="nav-button"
+            >
+              Open <em>Login Form</em>
+            </button></NavLink>
             
             <footer className="nav-footer">
               <button
@@ -88,6 +98,7 @@ const Sidenav = () => {
                     <Route path="/stuff" component={Stuff} />
                     <Route path="/counter" component={Counter} />
                     <Route path = "/login" component={LoginForm} />
+                    <Route path = "/analytics" component={Analytics} />
         </div>
       </React.Fragment>
       
