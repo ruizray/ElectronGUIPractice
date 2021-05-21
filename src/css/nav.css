@@ -265,6 +265,7 @@
   color: #495057;
   text-decoration: none;
   background-color: #f8f9fa;
+
 }
 
 .list-group-item-action:active {
@@ -295,6 +296,7 @@
 .list-group-item:hover, .list-group-item:focus {
   z-index: 1;
   text-decoration: none;
+  cursor: pointer ;
 }
 
 .list-group-item.disabled, .list-group-item:disabled {

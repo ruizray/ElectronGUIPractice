@@ -4,15 +4,26 @@ import { getMovies } from './fakeMovieService'
 import { paginate } from './../scripts/paginate';
 import ListGroup from './listGroup';
 import { getGenres } from './fakeGenreService';
+import _ from 'lodash';
+
+import MoviesTable from './MoviesTable';
+
 class Movies extends Component {
   state = {
     movies: [],
     genres: [],
     pageSize: 4,
     currentPage: 1,
+    selectedGenre: '',
+    sortColumn: {
+      path: 'title',
+      order: 'asc'
+    }
   }
   componentDidMount() {
-    this.setState({ movies: getMovies(), genres: getGenres() })
+    const genres = [{ name: 'All Genres' }, ...getGenres()]
+    this.setState({ movies: getMovies(), genres })
+    console.log(this.state.movies)
   }
 
   handleDelete = movie => {
@@ -28,15 +39,27 @@ class Movies extends Component {
 
   handleGenreSelect = genre => {
     console.log(genre)
+    this.setState({ selectedGenre: genre, currentPage: 1 })
   }
 
+  handleSort = sortColumn => {
+    this.setState({ sortColumn })
+  }
+
+  getPagedData = () =>{
+   
+    const { pageSize, currentPage, selectedGenre, movies: allMovies, sortColumn } = this.state;
+    const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id) : allMovies;
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
+    const movies = paginate(sorted, currentPage, pageSize)
+
+    return {totalCount : filtered.length, data : movies}
+  }
   render() {
-    const { length: count } = this.state.movies
-    const { pageSize, currentPage, movies: allMovies } = this.state;
-    if (count == 0) return <p>There are no movies in the database.</p>;
-
-    const movies = paginate(allMovies, currentPage, pageSize)
-
+     const { length: count } = this.state.movies
+     const { pageSize, currentPage,  sortColumn } = this.state;
+  if (count === 0) return <p>There are no movies in the database.</p>;
+  const {totalCount , data: movies} = this.getPagedData()
     return (
       <React.Fragment>
         <section
@@ -69,39 +92,17 @@ class Movies extends Component {
                 <code>input.txt</code> that will generate the graph
               </p>
               <div className="row">
-                <div className="col-2"><ListGroup items={this.state.genres} onItemSelect={this.handleGenreSelect} /></div>
+                <div className="col-2">
+                  <ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect} />
+                </div>
                 <div className="col">
-                  <p>Showing {count} movies in the database</p>
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Title</th>
-                        <th>Genre</th>
-                        <th>Stock</th>
-                        <th>Rate</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {movies.map(movie => (
-                        <tr key={movie._id}>
-                          <td>{movie.title}</td>
-                          <td>{movie.genre.name}</td>
-                          <td>{movie.numberInStock}</td>
-                          <td>{movie.dailyRentalRate}</td>
-                          <td>
-                            <button onClick={() => this.handleDelete(movie)} className="demo-button">
-                              Delete
-                        </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <p>Showing {totalCount} movies in the database</p>
+                  <MoviesTable movies={movies} sortColumn={sortColumn} onDelete={this.handleDelete} onSort={this.handleSort} />
+
                 </div>
 
               </div>
-              <Pagination itemsCount={count} pageSize={pageSize} currentPage={currentPage} onPageChange={this.handlePageChange} />
+              <Pagination itemsCount={totalCount} pageSize={pageSize} currentPage={currentPage} onPageChange={this.handlePageChange} />
             </div>
           </div>
         </section>

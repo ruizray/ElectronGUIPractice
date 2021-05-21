@@ -1,136 +1,35 @@
 import React, { Component } from "react";
 import Graph from './Graph'
-import Checkbox from './Checkbox'
-import {readFileInput} from '../scripts/readGraphFile'
+import { readFileInput, createGraphs } from './graphData'
 class Stuff extends Component {
-
-    constructor() {
-        super();
-
-        this.state = {
-            sortedCheckbox:{type: '', label : 'Sorted', id: 'sortGraph', active: false},
-
-            typeCheckboxes: [
-                {type: 'bar', label : 'Bar Chart', id: 'chartTypeBar', active: false },
-                {type: 'line', label : 'Line Chart', id: 'chartTypeLine', active: false }
-            ],
-
-            chartType:'',
-            lines: [],
-            graphStart: "",
-            nextGraph: "",
-            previousGraph: "",
-            dataSets: [],
-            sendGraph: [],
-            graphs: 0,
-            graphPos: 0,
-        }
+    state = {
+        data: [],
+        type: 'bar',
+        dataSet: [],
+        graphNum: 0,
+        buttonState: true,
+        lines: [],
+        label: "t",
     }
 
-    enableButtons = (button) => {
-        button.disabled = false;
-        console.log(button)
+    handleNextGraphClick = () => {
+        let graphNum = this.state.graphNum;
+        graphNum++;
+        const temp = this.state.dataSet[graphNum]
+        const { data, label } = temp
+        this.setState({ data, label, graphNum })
+
     }
-    handleFileInput = async (e) => {
+
+    handleGraphStartClick = async (e) => {
         let lines = await readFileInput(e);
-        this.setState({lines})
-    }
-
-    graphStart = (e) => {
- 
-
-        // settings.set('graph', {
-        //     state: this.state    ,
-        // })
-
-        this.CreateGraphs()
-        console.log(this.state)
-        var firstGraph = this.state.dataSets[this.state.graphPos].data;
-        console.log(firstGraph)
-        this.wrapState(firstGraph)
-        console.log(this.state)
-    }
-
-    graphNext = (e) => {
-        console.log(this.state)
-        var temp = this.state.graphPos;
-        temp++;
-        console.log(this.state)
-
-        this.setState({ graphPos: temp })
-        var firstGraph = this.state.dataSets[temp].data;
-        this.wrapState(firstGraph)
-    }
-
-    wrapState = (state) => {
-        let
-            data = {
-                datasets: [{
-                    data: state,
-                    label: '',
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            };
-
-        this.setState({ sendGraph: data });
-    }
-
-
-
-    CreateGraphs = () => {
-        var lines = this.state.lines
-        console.log(lines)
-        this.state.lines.shift();
-        this.state.lines.shift();
-        this.state.lines.shift();
-        this.state.lines.shift();
-        while (this.state.lines.length != 0) {
-            var groupNum = this.state.lines.shift();
-            var group = this.state.lines.splice(0, groupNum);
-            this.readLines(group)
-            this.state.lines.shift();
-            let temp = this.state.graphs + 1;
-            this.setState({ graphs: temp });
-        }
-    }
-    readLines = (group) => {
-        var line;
-        var tempdata = { data: [], label: "", sortedData: [] }
-
-        for (var i = 0; i < group.length; i++) {
-            line = group[i].split(',');
-            tempdata.data.push({ x: line[1] + ", " + line[2], y: line[3] })
-        }
-        tempdata.label = line[0]
-        var temp = this.state.dataSets.push(tempdata)
-        console.log(temp)
-        this.setState({ dataSets: temp })
-
-    }
-
-
-    handleTypeCheckboxClick = checkbox => {
-        console.log(checkbox)
+        this.setState({ lines })
+        this.setState({ dataSet: createGraphs(lines) })
+        const { data, label } = this.state.dataSet[0]
+        this.setState({ data, label, buttonState: false })
     }
 
     render() {
-        //let btn_class = this.state.isOpen ? "button-graph" : "button-graph is-open";
 
         return (
             <React.Fragment>
@@ -158,19 +57,19 @@ class Stuff extends Component {
                             <div className="demo-box">
                                 <div style={{ marginBottom: '20px' }} className="row">
                                     <div className="col-md-12">
-                                        <Graph data={this.state.sendGraph} />
+                                        <Graph title={this.state.label} type={this.state.type} data={this.state.data} />
 
                                     </div>
 
                                 </div>
 
                                 <div id="fileSelectorContainer" style={{ marginBottom: '20px', marginLeft: '2px' }} className="row">
-                                    <input type="file" id="file-selector" onChange={(e) => this.handleFileInput(e)}></input>
+                                    <input type="file" id="file-selector" onChange={(e) => this.handleGraphStartClick(e)} ></input>
                                 </div>
-
+                                {/* 
                                 <div style={{ marginBottom: '10px' }, { marginLeft: '2px' }} id="graphTitleContainer" className="row">
                                     <label htmlFor="graphTitle">Graph Title: </label>
-                                    <input  style={{ marginLeft: 10 }} type="text" id="graphTitle" name="graphTitle" defaultValue=""></input>
+                                    <input style={{ marginLeft: 10 }} type="text" id="graphTitle" name="graphTitle" defaultValue=""></input>
                                 </div>
 
 
@@ -183,7 +82,7 @@ class Stuff extends Component {
                                         <Checkbox key={this.state.sortedCheckbox.id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.sortedCheckbox} />
                                         {/* <input type="checkbox" id="sortedBox" name="sortedBox" onChange={(e) => this.checkBoxes(e)} value="false"></input>
                                         <label htmlFor="sortedBox"> Sorted</label>
-                                     */}
+                                    
 
                                     </div>
                                 </div>
@@ -192,36 +91,36 @@ class Stuff extends Component {
                                 <h5>Chart Type</h5>
                                 <div id="chartTypeBoxes" style={{ marginBottom: '10px' }} className="row">
                                     <div className="col-md-3">
-                                    <Checkbox key={this.state.typeCheckboxes[0].id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.typeCheckboxes[0]} />
+                                        <Checkbox key={this.state.typeCheckboxes[0].id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.typeCheckboxes[0]} />
                                     </div>
                                     <div className="col-md-3">
-                                    <Checkbox key={this.state.typeCheckboxes[1].id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.typeCheckboxes[1]} />
+                                        <Checkbox key={this.state.typeCheckboxes[1].id} onCheck={this.handleTypeCheckboxClick} checkbox={this.state.typeCheckboxes[1]} />
                                     </div>
                                     <div className="col-md-3">
                                         <input type="checkbox" className="chartType" id="pieBox" ></input>
                                         <label htmlFor="pieBox">Pie Chart</label>
                                     </div>
                                 </div>
-
+                                */}
                                 <h5>Graph Controls</h5>
                                 <div id="GraphControls" style={{ marginBottom: '10px' }} className="row">
                                     <div className="col-md-12">
-                                        <button style={{ width: '100%' }} className="demo-button button-group" onClick={(e) => this.graphStart(e)} id="graphStart" disabled={!this.state.graphStart}>Start Graph</button>
+                                        <button style={{ width: '100%' }} className="demo-button button-group" onClick={(e) => this.graphStart(e)} id="graphStart" disabled={this.state.buttonState}>Start Graph</button>
                                     </div>
                                 </div>
                                 <div style={{ marginBottom: '10px' }} className="row">
                                     <div className="col-md-4">
                                         <button style={{ width: '100%' }} className="demo-button button-group" id="prevGraph" disabled>Previous Graph</button>
                                     </div>
-                                    <div className="col-md-4"><button style={{ marginBottom: '10px' }, { width: '100%' }} className="demo-button " id="sortGraph"
+                                    <div className="col-md-4"><button style={{ marginBottom: '10px' , width: '100%' }} className="demo-button " id="sortGraph"
                                         disabled>Sort
               Graph</button></div>
                                     <div className="col-md-4">
-                                        <button style={{ width: '100%' }} className="demo-button button-group" onClick={(e) => this.graphNext(e)} id="nextGraph" disabled={!this.state.nextGraph}>Next Graph</button>
+                                        <button style={{ width: '100%' }} className="demo-button button-group" onClick={this.handleNextGraphClick} id="nextGraph" disabled={this.state.buttonState} >Next Graph</button>
                                     </div>
                                 </div>
 
-
+                                {/*
                                 <h5>Animation Controls</h5>
                                 <div id="animationControls" style={{ marginbottom: '10px' }} className="row">
                                     <div className="col-md-6">
@@ -231,7 +130,7 @@ class Stuff extends Component {
 
                                     <div className="col-md-6"><button style={{ marginBottom: '10px' }, { width: '100%' }} className="demo-button " id="endAnimation"
                                         disabled>End Animation</button></div>
-                                </div>
+                                </div> */}
 
 
                                 <h5>input.txt</h5>

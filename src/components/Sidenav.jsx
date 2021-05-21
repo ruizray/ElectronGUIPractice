@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import {
 
   Route,
   NavLink,
-  HashRouter
 } from 'react-router-dom'
 
 
 import Movies from './Movies'
 import Stuff from './Stuff'
 import Counter from './Counters'
+import LoginForm from './LoginForm';
 const Sidenav = () => {
 
 
@@ -53,6 +53,15 @@ const Sidenav = () => {
             >
               Handling window <em>crashes and hangs</em>
             </button></NavLink>
+
+            <NavLink style={{textDecoration:'none'}} to ="/login"><button
+              type="button"
+              id="button-crash-hang"
+              data-section="crash-hang"
+              className="nav-button"
+            >
+              Open <em>Login Form</em>
+            </button></NavLink>
             
             <footer className="nav-footer">
               <button
@@ -78,6 +87,7 @@ const Sidenav = () => {
           <Route exact path="/" component={Movies} />
                     <Route path="/stuff" component={Stuff} />
                     <Route path="/counter" component={Counter} />
+                    <Route path = "/login" component={LoginForm} />
         </div>
       </React.Fragment>
       
