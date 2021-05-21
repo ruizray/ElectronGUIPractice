@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import Pagination from './Pagination';
+import Pagination from './Pagination'
 import { getMovies } from './fakeMovieService'
-import { paginate } from './../scripts/paginate';
-import ListGroup from './listGroup';
-import { getGenres } from './fakeGenreService';
-import _ from 'lodash';
+import { paginate } from './../scripts/paginate'
+import ListGroup from './listGroup'
+import { getGenres } from './fakeGenreService'
+import _ from 'lodash'
 
-import MoviesTable from './MoviesTable';
+import MoviesTable from './MoviesTable'
 
 class Movies extends Component {
   state = {
@@ -27,14 +27,13 @@ class Movies extends Component {
   }
 
   handleDelete = movie => {
-
-    const movies = this.state.movies.filter(m => m._id !== movie._id);
-    this.setState({ movies });
+    const movies = this.state.movies.filter(m => m._id !== movie._id)
+    this.setState({ movies })
   }
 
   handlePageChange = page => {
     this.setState({ currentPage: page })
-    console.log(page);
+    console.log(page)
   }
 
   handleGenreSelect = genre => {
@@ -46,20 +45,28 @@ class Movies extends Component {
     this.setState({ sortColumn })
   }
 
-  getPagedData = () =>{
-   
-    const { pageSize, currentPage, selectedGenre, movies: allMovies, sortColumn } = this.state;
-    const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id) : allMovies;
+  getPagedData = () => {
+    const {
+      pageSize,
+      currentPage,
+      selectedGenre,
+      movies: allMovies,
+      sortColumn
+    } = this.state
+    const filtered =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter(m => m.genre._id === selectedGenre._id)
+        : allMovies
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
     const movies = paginate(sorted, currentPage, pageSize)
 
-    return {totalCount : filtered.length, data : movies}
+    return { totalCount: filtered.length, data: movies }
   }
   render() {
-     const { length: count } = this.state.movies
-     const { pageSize, currentPage,  sortColumn } = this.state;
-  if (count === 0) return <p>There are no movies in the database.</p>;
-  const {totalCount , data: movies} = this.getPagedData()
+    const { length: count } = this.state.movies
+    const { pageSize, currentPage, sortColumn } = this.state
+    if (count === 0) return <p>There are no movies in the database.</p>
+    const { totalCount, data: movies } = this.getPagedData()
     return (
       <React.Fragment>
         <section
@@ -93,21 +100,31 @@ class Movies extends Component {
               </p>
               <div className="row">
                 <div className="col-2">
-                  <ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect} />
+                  <ListGroup
+                    items={this.state.genres}
+                    selectedItem={this.state.selectedGenre}
+                    onItemSelect={this.handleGenreSelect}
+                  />
                 </div>
                 <div className="col">
                   <p>Showing {totalCount} movies in the database</p>
-                  <MoviesTable movies={movies} sortColumn={sortColumn} onDelete={this.handleDelete} onSort={this.handleSort} />
-
+                  <MoviesTable
+                    movies={movies}
+                    sortColumn={sortColumn}
+                    onDelete={this.handleDelete}
+                    onSort={this.handleSort}
+                  />
                 </div>
-
               </div>
-              <Pagination itemsCount={totalCount} pageSize={pageSize} currentPage={currentPage} onPageChange={this.handlePageChange} />
+              <Pagination
+                itemsCount={totalCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={this.handlePageChange}
+              />
             </div>
           </div>
         </section>
-
-
       </React.Fragment>
     )
   }
