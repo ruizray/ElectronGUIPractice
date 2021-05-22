@@ -31,7 +31,6 @@ class Analytics extends Component {
     });
     const result1 = queryResult2.map((row) => {
       const dateSting = row.dimensions[0].replace('- Bolingbrook, IL', '').trim();
-
       data2.push({ x: dateSting, y: row.metrics[0].values[0].trim() })
     });
     console.log(data1)
@@ -125,7 +124,7 @@ class Analytics extends Component {
     this.setState({ type2: e.currentTarget.id })
   }
   columns = [{ path: 'x', label: 'Date' }, { path: 'y', label: 'Total Visits' }]
-  columns2 = [{ path: 'x', label: 'Most Visited' }, { path: 'y', label: 'Yep' }]
+  columns2 = [{ path: 'x', label: 'Page Title' }, { path: 'y', label: 'Page Visits' }]
   render() {
     return (
       <div>

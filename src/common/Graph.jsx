@@ -7,10 +7,10 @@ import { Line, Bar, Pie } from 'react-chartjs-2';
 class Graph extends Component {
     buildData(graphData, pieValues) {
 
-       let temp = []
+        let temp = []
         if (pieValues !== undefined) {
             temp = [...pieValues]
-        }else{}
+        } else { }
         let data = {
             datasets: [{
                 data: graphData,
