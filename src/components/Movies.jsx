@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Pagination from './Pagination'
-import { getMovies } from './fakeMovieService'
+import Pagination from '../common/Pagination'
+import { getMovies } from '../scripts/fakeMovieService'
 import { paginate } from './../scripts/paginate'
-import ListGroup from './listGroup'
-import { getGenres } from './fakeGenreService'
+import ListGroup from '../common/listGroup'
+import { getGenres } from '../scripts/fakeGenreService'
 import _ from 'lodash'
 
 import MoviesTable from './MoviesTable'
@@ -46,13 +46,7 @@ class Movies extends Component {
   }
 
   getPagedData = () => {
-    const {
-      pageSize,
-      currentPage,
-      selectedGenre,
-      movies: allMovies,
-      sortColumn
-    } = this.state
+    const { pageSize, currentPage, selectedGenre, movies: allMovies, sortColumn } = this.state
     const filtered =
       selectedGenre && selectedGenre._id
         ? allMovies.filter(m => m.genre._id === selectedGenre._id)

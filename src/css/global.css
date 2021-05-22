@@ -140,6 +140,7 @@ kbd {
   overflow: hidden;
   visibility: visible;
   opacity: 1;
+  overflow-y: scroll;
 }
 .content.is-shown {
   visibility: visible;;

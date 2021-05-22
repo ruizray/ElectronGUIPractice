@@ -1,26 +1,16 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 
 
 class Report extends Component {
-
-    formatDate(date) {
-        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-    }
-    componentDidMount() {
-
-       
-
-    }
-
     state = {
         data: [],
         nextSaturday: '',
-
-
+    }
+    formatDate(date) {
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
     }
 
     displayResults = (response) => {
-
         const queryResult = response.result.reports[0].data.rows;
         const result = queryResult.map((row) => {
             const dateSting = row.dimensions[0];
@@ -32,7 +22,6 @@ class Report extends Component {
             };
         });
         this.setState({ data: response.result });
-
     };
 
 
@@ -76,13 +65,10 @@ class Report extends Component {
         var d = new Date();
         d.setDate(d.getDate() + (1 + 5 - d.getDay()) % 5);
         const nextFriday = this.formatDate(d);
-
         var weekAgo = new Date(d)
         weekAgo.setDate(d.getDate() - 6)
         const lastSunday = this.formatDate(weekAgo)
-
         console.log(lastSunday, nextFriday)
-
         this.queryReport()
     }
 

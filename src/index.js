@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 
 
 import './css/nav.css'
-import './index.css'
 import './css/demo.css'
 import './css/section.css'
 import './css/variables.css'

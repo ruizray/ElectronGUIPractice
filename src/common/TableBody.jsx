@@ -27,4 +27,11 @@ class TableBody extends Component {
     }
 }
 
+TableBody.defaultProps={
+   data : [{
+    item1: "Attibute 1",
+    item2: "Attribute 2",
+  }]
+}
+
 export default TableBody;

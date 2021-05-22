@@ -13,4 +13,11 @@ const Table = ({columns , sortColumn, onSort , data}) => {
         </table>); 
 }
 
+
+Table.defaultProps={
+    columns: [{ path: 'item1', label: 'Column1'}, { path: 'item2', label: 'Column2'}],
+ 
+}
+
+
 export default Table;

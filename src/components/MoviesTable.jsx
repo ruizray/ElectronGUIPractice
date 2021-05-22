@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Table from './Table'
+import Table from '../common/Table'
 
 
 class MoviesTable extends Component {
@@ -7,7 +7,7 @@ class MoviesTable extends Component {
     { path: 'genre.name', label: 'Genre' },
     { path: 'numberInStock', label: 'Stock' },
     { path: 'dailyRentalRate', label: 'Rate' },
-    { key: 'like' },
+
     {
         key: 'delete', content: movie => (<button onClick={() => this.props.onDelete(movie)} className="demo-button">
             Delete

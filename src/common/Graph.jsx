@@ -6,11 +6,11 @@ import { Bar } from 'react-chartjs-2'
 
 class Graph extends Component {
     buildData(graphData, title) {
- 
+
         let data = {
             datasets: [{
                 data: graphData,
-                labels: ['red', 'blue'],
+                labels: [],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -29,13 +29,13 @@ class Graph extends Component {
                 ],
                 borderWidth: 1
             }],
-            labels:[]
+            labels: []
         }
         return data;
     }
 
-    buildOptions(key){
-      let  options = {
+    buildOptions(title) {
+        let options = {
             responsive: true,
             scales: {
                 y: {
@@ -45,16 +45,16 @@ class Graph extends Component {
             plugins: {
                 title: {
                     display: true,
-                    text: key
+                    text: title
                 },
             },
             tooltips: {
                 callbacks: {
-                  label: function(tooltipItem) {
-                console.log(tooltipItem)
-                    return tooltipItem.yLabel;
+                    label: function (tooltipItem) {
+                        console.log(tooltipItem)
+                        return tooltipItem.yLabel;
+                    }
                 }
-              }
             },
             animation: {
                 // general animation time
@@ -63,21 +63,21 @@ class Graph extends Component {
         return options;
     }
 
-    
+
     render() {
-        const { type, data,title} = this.props;
+        const { type, data, title } = this.props;
         console.log(this.props)
         if (type === 'line') {
 
             return (
                 <div >
-                    <Line type={type} data={this.buildData(data, title)} options={this.buildOptions(title)} />
+                    <Line data={this.buildData(data, title)} options={this.buildOptions(title)} />
                 </div>
             );
         } else {
             return (
                 <div >
-                    <Bar id={title} type={type} data={this.buildData(data)} options={this.buildOptions(title)} />
+                    <Bar id={title} data={this.buildData(data)} options={this.buildOptions(title)} />
                 </div>
             )
         }

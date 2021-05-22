@@ -70,7 +70,7 @@ const Sidenav = () => {
               data-section="crash-hang"
               className="nav-button"
             >
-              Open <em>Login Form</em>
+              Open <em>Analytics Data</em>
             </button></NavLink>
             
             <footer className="nav-footer">

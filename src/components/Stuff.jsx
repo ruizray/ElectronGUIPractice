@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Graph from './Graph'
-import { readFileInput, createGraphs } from './graphData'
+import Graph from '../common/Graph'
+import { readFileInput, createGraphs } from '../scripts/graphData'
 class Stuff extends Component {
     state = {
         data: [],
