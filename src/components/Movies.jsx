@@ -63,65 +63,66 @@ class Movies extends Component {
     const { totalCount, data: movies } = this.getPagedData()
     return (
       <React.Fragment>
-        <section
-          id="windows-section"
-          className="section js-section u-category-windows"
-        >
-          <header className="section-header">
-            <div className="section-wrapper">
-              <h1>Movies App</h1>
-            </div>
-          </header>
 
-          <div className="demo">
-            <div className="demo-wrapper is-open">
-              <button
-                id="new-graph-toggle"
-                onClick={() => this.isOpen}
-                className="js-container-target demo-toggle-button"
-              >
-                Just Testing
-                <div className="demo-meta u-avoid-clicks">
-                  Supports: Win, macOS, Linux{' '}
-                  <span className="demo-meta-divider">|</span>
-                  Process: Main
-                </div>
-              </button>
-              <p>
-                In this demo we create a new Graph (via the{' '}
-                <code>renderChart.js</code> script) and provide a source file
-                <code>input.txt</code> that will generate the graph
-              </p>
-              <div className="row">
-                <div className="col-2">
-                  <ListGroup
-                    items={this.state.genres}
-                    selectedItem={this.state.selectedGenre}
-                    onItemSelect={this.handleGenreSelect}
-                  />
-                </div>
-                <div className="col">
-                  <p>Showing {totalCount} movies in the database</p>
-                  <MoviesTable
-                    movies={movies}
-                    sortColumn={sortColumn}
-                    onDelete={this.handleDelete}
-                    onSort={this.handleSort}
-                  />
-                </div>
+
+        <div class="container-fluid px-4">
+          <h1 class="mt-4">Tables</h1>
+          <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Tables</li>
+          </ol>
+          <div class="card mb-4">
+            <div class="card-body">
+              DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
+                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                                .
+                            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div>
+            <div className="row mx-4 my-4">
+              <div className="col-2 ">
+                <ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect} />
               </div>
-              <Pagination
-                itemsCount={totalCount}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                onPageChange={this.handlePageChange}
-              />
+              <div className="col">
+                <p>Showing {totalCount} movies in the database</p>
+                <MoviesTable movies={movies} sortColumn={sortColumn} onDelete={this.handleDelete} onSort={this.handleSort} />
+              </div>
+              <Pagination itemsCount={totalCount} pageSize={pageSize} currentPage={currentPage} onPageChange={this.handlePageChange} />
             </div>
           </div>
-        </section>
+        </div>
+
       </React.Fragment>
     )
   }
 }
 
 export default Movies
+{/* <div class="container-fluid px-4">
+<h1 class="mt-4">Tables</h1>
+<ol class="breadcrumb mb-4">
+  <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+  <li class="breadcrumb-item active">Tables</li>
+</ol>
+<div class="card mb-4">
+  <div class="card-body">
+    DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
+                      <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                      .
+                  </div>
+</div>
+<div class="card mb-4">
+  <div class="card-header">
+    <i class="fas fa-table me-1"></i>
+                      DataTable Example
+                  </div>
+  <div className="row mx-4 my-4">
+   
+   NEW CODE HERE
+  </div>
+</div>
+</div> */}

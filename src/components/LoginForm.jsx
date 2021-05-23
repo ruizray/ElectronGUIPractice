@@ -27,7 +27,7 @@ class LoginForm extends Component {
         }
     }
     validate = () => {
-        const result = Joi.validate(this.state.account, this.schema, {abortEarly : false})
+        const result = Joi.validate(this.state.account, this.schema, { abortEarly: false })
         console.log(result);
         const errors = {};
         const { account } = this.state;
@@ -68,40 +68,31 @@ class LoginForm extends Component {
         return (
 
             <React.Fragment>
-                <section id="windows-section" className="section js-section u-category-windows">
-                    <header className="section-header">
-                        <div className="section-wrapper">
-                            <h1>Movies App</h1>
-                        </div>
-                    </header>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Login Form</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Login Form</li>
+                    </ol>
 
-                    <div className="demo">
-                        <div className="demo-wrapper is-open">
-                            <button id="new-graph-toggle" onClick={() => this.isOpen} className="js-container-target demo-toggle-button" >
-                                Just Testing
-                    <div className="demo-meta u-avoid-clicks">
-                                    Supports: Win, macOS, Linux{' '}
-                                    <span className="demo-meta-divider">|</span>
-                      Process: Main
-                    </div>
-                            </button>
-                            <p>
-                                In this demo we create a new Graph (via the{' '}
-                                <code>renderChart.js</code> script) and provide a source file
-                                <code>input.txt</code> that will generate the graph
-                  </p>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                      DataTable Example
+                  </div>
+                        <div className="row mx-4 my-4">
+
                             <h1>Login</h1>
                             <form onSubmit={this.handleSubmit} >
 
                                 <Input name="username" value={account.username} label="Username" onChange={this.handleChange} error={errors.username} />
                                 <Input name="password" value={account.password} label="Password" onChange={this.handleChange} error={errors.password} />
 
-                                <button className="demo-button">Login</button>
+                                <button className="btn btn-primary mt-2">Login</button>
                             </form>
                         </div>
                     </div>
-                </section>
-
+                </div>
 
             </React.Fragment>
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class GoogleAuth extends Component {
   state = {
     isSignedIn: false,
-    text : ''
+    text: ''
   }
 
   componentDidMount() {
@@ -12,7 +12,7 @@ class GoogleAuth extends Component {
   renderButton = () => {
     window.gapi.signin2.render("signin-button", {
       scope: "profile email",
-      width: 240,
+      width: 200,
       height: 50,
       longtitle: true,
       theme: "dark",
@@ -23,8 +23,8 @@ class GoogleAuth extends Component {
   };
 
   onSuccess = (googleUser) => {
-    const text =  "Logged in as: " + googleUser.getBasicProfile().getName()
-    this.setState({text})
+    const text = "Logged in as: " + googleUser.getBasicProfile().getName()
+    this.setState({ text })
     console.log("Logged in as: " + googleUser.getBasicProfile().getName());
   };
 
@@ -57,8 +57,8 @@ class GoogleAuth extends Component {
   init = () => {
     //(2)
     this.checkSignedIn().then(signedIn => {
-      if(signedIn === false){
-        this.setState({text : "Not Currently Logged In"})
+      if (signedIn === false) {
+        this.setState({ text: "Not Currently Logged In" })
       }
       this.setState({ isSignedIn: signedIn })
       this.renderButton()
@@ -72,10 +72,10 @@ class GoogleAuth extends Component {
 
   render() {
     return (
-      <div className="Button">
+      <div style={{width:'100%'}} >
 
-        <h1>{this.state.text}</h1>
-        <div id="signin-button"></div>
+        <div className="small">{this.state.text}</div>
+        <div style={{width:'100%'}} id="signin-button"></div>
       </div>
 
     );

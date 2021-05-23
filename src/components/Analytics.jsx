@@ -2,7 +2,12 @@ import React, { Component } from 'react'
 import GoogleAuth from './GoogleAuth'
 import Graph from '../common/Graph';
 import Table from '../common/Table';
-
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import Input from './../common/Input';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
+import { jsPDF } from 'jspdf'
 
 class Analytics extends Component {
   state = {
@@ -10,11 +15,24 @@ class Analytics extends Component {
     data2: [],
     type: 'bar',
     type2: 'bar',
-    label: "",
-    nextSaturday: '',
+    label1: "Total Site Visits from - to - ",
+    label2: "Top Pages",
+    startDate: '',
+    endDate: '',
   }
   formatDate(date) {
-    return date.getFullYear() + '-' + '0' + (date.getMonth() + 1) + '-' + date.getDate()
+    var day = date.getDate()
+    var month = date.getMonth() + 1
+
+    if (day < 10) {
+      day = '0' + day
+    }
+    if (month < 10) {
+      month = '0' + month
+    }
+
+
+    return date.getFullYear() + '-' + month + '-' + day
   }
 
   parseResults = (response) => {
@@ -36,7 +54,7 @@ class Analytics extends Component {
     console.log(data1)
     console.log(data2)
     data2.sort((firstItem, secondItem) => (secondItem.y - firstItem.y));
-    data2 = data2.splice(1, 8);
+    data2 = data2.splice(1, 7);
     console.log(data2)
     this.setState({ data1, data2 });
   };
@@ -44,7 +62,7 @@ class Analytics extends Component {
 
 
   queryReport = (sat) => {
-    console.log(sat)
+
     window.gapi.client
       .request(
         {
@@ -57,8 +75,8 @@ class Analytics extends Component {
                 viewId: "138961309", //enter your view ID here
                 dateRanges: [
                   {
-                    startDate: "6daysAgo",
-                    endDate: this.state.nextSaturday,
+                    startDate: this.state.startDate,
+                    endDate: this.state.endDate,
                   },
                 ],
                 metrics: [
@@ -76,8 +94,8 @@ class Analytics extends Component {
                 viewId: "138961309", //enter your view ID here
                 dateRanges: [
                   {
-                    startDate: "6daysAgo",
-                    endDate: this.state.nextSaturday,
+                    startDate: this.state.startDate,
+                    endDate: this.state.endDate,
                   },
                 ],
                 metrics: [
@@ -101,63 +119,114 @@ class Analytics extends Component {
   };
 
   handleClick = () => {
-    var d = new Date();
-    d.setDate(d.getDate() + (1 + 5 - d.getDay()) % 5);
-    const nextSaturday = this.formatDate(d);
-    var weekAgo = new Date(d)
-    weekAgo.setDate(d.getDate() - 6)
-    const lastSunday = this.formatDate(weekAgo)
-    const label = 'Total site visits from: ' + lastSunday + " to " + nextSaturday
-    this.setState({ nextSaturday, lastSunday, label }, () => {
-      console.log(this.state.nextSaturday);
-      this.queryReport()
-    });
-
-
-
+    this.queryReport()
   }
 
-  handleTypeClick = e => {
-    this.setState({ type: e.currentTarget.id })
+  handleDownload = () => {
+    var input = document.querySelector("#pdf")
+    html2canvas(input, {scrollY: -window.scrollY})
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+         
+        });
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('download.pdf');
+      });
   }
-  handleTypeClick2 = e => {
-    this.setState({ type2: e.currentTarget.id })
-  }
+
+
+
   columns = [{ path: 'x', label: 'Date' }, { path: 'y', label: 'Total Visits' }]
-  columns2 = [{ path: 'x', label: 'Page Title' }, { path: 'y', label: 'Page Visits' }]
+  columns2 = [{ path: 'z', label: 'Page Ranking' }, { path: 'x', label: 'Page Title' }, { path: 'y', label: 'Page Visits' }]
+
+  handleDate = (e) => {
+    console.log(e[0], e[1])
+    var date1 = this.formatDate(e[0])
+    var date2 = this.formatDate(e[1])
+    const label1 = 'Total site visits from: ' + date1 + " to " + date2
+    this.setState({ startDate: date1, endDate: date2, label1 }, () => {
+    })
+
+
+  }
+
   render() {
     return (
-      <div>
-        <div className="Button">
-          <GoogleAuth /><br />
-          <button onClick={this.handleClick}>Send Request</button>
-          <button id="line" onClick={this.handleTypeClick}>Change To Line</button>
-          <button id="bar" onClick={this.handleTypeClick}>Change To Bar</button>
-        </div>
-        <div className="row">
-          <div className="col-md-8">
-            <Graph title={this.state.label} type={this.state.type} data={this.state.data1} />
-          </div>
-          <div style={{ alignSelf: 'center' }} className="col-md-4">
-            <Table columns={this.columns} data={this.state.data1} />
-          </div>
-        </div>
 
-        <div>
-          <button id="line" onClick={this.handleTypeClick2}>Change To Line</button>
-          <button id="bar" onClick={this.handleTypeClick2}>Change To Bar</button>
-          <button id="pie" onClick={this.handleTypeClick2}>Change To Pie</button>
-        </div>
-        <div className="row">
-          <div className="col-md-8">
-            <Graph title={this.state.label2} type={this.state.type2} data={this.state.data2} />
+      <main id="pdf">
+
+        <div class="container-fluid px-4">
+
+          <GoogleAuth />
+          <h1 className="mt-4">Tables</h1>
+          <ol className="breadcrumb mb-4">
+            <li className="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li className="breadcrumb-item active">Tables</li>
+          </ol>
+          <div class="card mb-4">
+            <div class="card-body">
+              DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
+                      <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                      .
+                  </div>
           </div>
 
-          <div style={{ alignSelf: 'center' }} className="col-md-4">
-            <Table columns={this.columns2} data={this.state.data2} />
+
+
+          <div className="row mx-4 ">
+            <div className="col-md-3 mb-4">
+              <Calendar onChange={this.handleDate} selectRange returnValue='range' />
+
+            </div>
+            <div className="col-md-9">
+              <div class="card mb-4">
+                <div class="card-header">
+                  <i class="fas fa-table me-1"></i>
+                      Request Settings
+                  </div>
+                <div className="row mx-4 my-4">
+
+
+                  <form onSubmit={this.handleSubmit} >
+
+                    <Input name="username" label="Username" />
+                    <Input name="password" label="Password" />
+
+                    <button onClick={this.handleClick} className="btn btn-primary mt-2">Send Request</button>
+                    <button onClick={this.handleDownload} className="btn btn-primary mt-2">Download Report</button>
+                  </form>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+          <div className="row mx-4 my-4">
+            <div className="col-md-6">
+              <Graph title={this.state.label1} data={this.state.data1} />
+            </div>
+            <div className="col-md-6">
+              <Graph title={this.state.label2} data={this.state.data2} />
+            </div>
+          </div>
+
+          <div className="row mx-4 my-4">
+            <div className="col-md-6">
+              <Table columns={this.columns} data={this.state.data1} />
+            </div>
+            <div className="col-md-6">
+              <Table columns={this.columns2} data={this.state.data2} />
+            </div>
           </div>
         </div>
-      </div>
+      </main>
+
+
     );
   }
 }

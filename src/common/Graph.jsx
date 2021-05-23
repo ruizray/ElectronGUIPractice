@@ -5,6 +5,9 @@ import { Line, Bar, Pie } from 'react-chartjs-2';
 
 
 class Graph extends Component {
+    state = {
+        type: 'bar'
+    }
     buildData(graphData, pieValues) {
 
         let temp = []
@@ -12,6 +15,7 @@ class Graph extends Component {
             temp = [...pieValues]
         } else { }
         let data = {
+            type: this.state.type,
             datasets: [{
                 data: graphData,
                 labels: [],
@@ -40,24 +44,11 @@ class Graph extends Component {
 
     buildOptions(title) {
         let options = {
+            legend: { display: false },
             responsive: true,
             scales: {
                 y: {
                     beginAtZero: true
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: title
-                },
-            },
-            tooltips: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        console.log(tooltipItem)
-                        return tooltipItem.yLabel;
-                    }
                 }
             },
             animation: {
@@ -67,36 +58,50 @@ class Graph extends Component {
         return options;
     }
 
+    handleTypeClick = e => {
+        this.setState({ type: e.currentTarget.id })
+    }
 
-    render() {
-        const { type, data, title } = this.props;
-
-        console.log(this.props)
-        if (type === 'line') {
-
-            return (
-                <div >
-                    <Line data={this.buildData(data)} options={this.buildOptions(title)} />
-                </div>
-            );
-        } else if (type === 'bar') {
-            return (
-                <div >
-                    <Bar id={title} data={this.buildData(data)} options={this.buildOptions(title)} />
-                </div>
-            )
+    renderType = (data, title) => {
+        var { type } = this.state
+        if (type === 'bar') {
+            return <Bar id={title} data={this.buildData(data)} options={this.buildOptions(title)} />
+        }
+        else if (type === 'line') {
+            return <Line data={this.buildData(data)} options={this.buildOptions(title)} />
         }
         else if (type === 'pie') {
             let pieLabels = data.map(x => Object.values(x)[0]);
             let pieData = data.map(x => Object.values(x)[1]);
-            console.log(pieData, pieLabels)
-            return (
-                <div >
-                    <Pie id={title} data={this.buildData(pieData, pieLabels)} options={this.buildOptions(title)} />
-                </div>
-            )
+            return <Pie id={title} data={this.buildData(pieData, pieLabels)} options={this.buildOptions(title)} />
         }
+    }
+    render() {
+        const { data, title } = this.props;
 
+        console.log(this.props)
+
+
+        return (
+
+            <React.Fragment>
+                <div className="card mb-4">
+                    <div className="card-header">{title}</div>
+                    <div className="card-body">
+                        <div className="row mb-4 justify-content-start">
+                            <div className="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <button className={' btn btn-secondary '} id="line" onClick={this.handleTypeClick}>Line</button>
+                                <button className={' btn btn-secondary'} id="bar" onClick={this.handleTypeClick}>Bar</button>
+                                <button className={' btn btn-secondary'} id="pie" onClick={this.handleTypeClick}>Pie</button>
+                            </div>
+                        </div>
+                        {this.renderType(data, title)}
+                    </div>
+                </div>
+            </React.Fragment>
+
+
+        );
     }
 }
 

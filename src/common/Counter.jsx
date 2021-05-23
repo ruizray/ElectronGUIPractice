@@ -9,18 +9,18 @@ class Counter extends Component {
         return (
             <div>
                 {this.props.children}
-                <code style={{fontSize:25 , marginRight:10}} className={this.getBadgeClasses()}>{this.formatCount()}</code>
-                <button onClick={() => this.props.onIncrement(this.props.counter)} className="demo-button">Increment</button>
+                <span style={{  marginRight:10}} className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                <button onClick={() => this.props.onIncrement(this.props.counter)} className="btn btn-primary btn-sm m-2">Increment</button>
              
              {/* Handled by parent. ANY MODIFICATIONS TO CHILDREN SHOULD BE HANDLED BY PARENTS */}
-               <button onClick={() => this.props.onDelete(this.props.counter.id)} style={{color:'red'}} className="demo-button btn btn-danger btn-sm m-2">Delete</button>
+               <button onClick={() => this.props.onDelete(this.props.counter.id)} className="btn btn-danger btn-sm m-2">Delete</button>
             </div>
 
         );
     }
 
     getBadgeClasses() {
-        let classes = "badge m-2 badge-";
+        let classes = "badge bg-dark m-2 bg-";
         //If count is 0 set warning else primary
         classes += this.props.counter.value === 0 ? "warning" : "primary";
         return classes;
