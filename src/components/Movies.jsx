@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Route, NavLink } from 'react-router-dom'
 import Pagination from '../common/Pagination'
 import { getMovies } from '../scripts/fakeMovieService'
 import { paginate } from './../scripts/paginate'
@@ -66,16 +67,15 @@ class Movies extends Component {
 
 
         <div class="container-fluid px-4">
-          <h1 class="mt-4">Tables</h1>
+          <h1 class="mt-4">Table Data Example</h1>
           <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Tables</li>
+            <li class="breadcrumb-item"><NavLink style={{ padding : 0}} className="nav-link" to="/movies">Dashboard</NavLink></li>
+            <li class="breadcrumb-item active">Movies Application</li>
           </ol>
           <div class="card mb-4">
             <div class="card-body">
-              DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                                .
+             This application demonstrates data handling, pagination, filtering, sorting, and deleting elements.   
+                                
                             </div>
           </div>
           <div class="card mb-4">
@@ -102,27 +102,3 @@ class Movies extends Component {
 }
 
 export default Movies
-{/* <div class="container-fluid px-4">
-<h1 class="mt-4">Tables</h1>
-<ol class="breadcrumb mb-4">
-  <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-  <li class="breadcrumb-item active">Tables</li>
-</ol>
-<div class="card mb-4">
-  <div class="card-body">
-    DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                      <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                      .
-                  </div>
-</div>
-<div class="card mb-4">
-  <div class="card-header">
-    <i class="fas fa-table me-1"></i>
-                      DataTable Example
-                  </div>
-  <div className="row mx-4 my-4">
-   
-   NEW CODE HERE
-  </div>
-</div>
-</div> */}

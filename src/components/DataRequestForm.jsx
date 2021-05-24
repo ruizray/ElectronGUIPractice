@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Joi from 'joi-browser'
 import Form from '../common/Form'
 import GoogleAuth from './GoogleAuth';
+import * as fa from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class DataRequestForm extends Form {
     state = {
         data: { pagecount: '' },
@@ -29,8 +31,7 @@ class DataRequestForm extends Form {
             <React.Fragment>
                 <div className="card mb-4">
                     <div className="card-header">
-                        <i className="fas fa-table me-1"></i>
-                      Request Form
+                        <FontAwesomeIcon icon={fa.faTable} /> Request Form
                   </div>
                     <div className="row mx-4 my-4">
                         <GoogleAuth />

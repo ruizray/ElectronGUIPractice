@@ -36,7 +36,7 @@
     "yarn": "^1.22.10"
   },
   "main": "public/main.js",
-  "homepage": "./Sidenav",
+  "homepage": "./index.html",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

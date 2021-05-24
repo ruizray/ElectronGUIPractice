@@ -4,12 +4,15 @@ import Sidenav from './Sidenav';
 
 class App extends Component {
     state = {
-        navToggled: false
+        navToggled: false,
+        dropdownToggled : false,
     }
 
-    handleToggle = () => {
+    handleNavToggle = () => {
         this.setState({ navToggled: !this.state.navToggled })
     };
+
+    
 
     render() {
         return (
@@ -17,7 +20,7 @@ class App extends Component {
                 <div className={this.state.navToggled === true ? "sb-nav-fixed sb-sidenav-toggled" : "sb-nav-fixed"}>
 
 
-                    <Sidenav onToggle={this.handleToggle} />
+                    <Sidenav onToggle={this.handleNavToggle} />
                 </div>
 
             </React.Fragment>

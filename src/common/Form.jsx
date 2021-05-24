@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import  Joi from 'joi-browser';
 import Input from './Input'
+import * as fa from '@fortawesome/free-solid-svg-icons'
 class Form extends Component {
     state = {
         data: {},
