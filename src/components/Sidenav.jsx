@@ -14,7 +14,7 @@ import Counter from './Counters'
 import LoginForm from './LoginForm';
 import Analytics from './Analytics'
 import { Component } from 'react';
-import GoogleAuth from './GoogleAuth';
+
 
 
 class Sidenav extends Component {
@@ -137,7 +137,7 @@ class Sidenav extends Component {
                 </div>
               </div>
               <div className="sb-sidenav-footer">
-                <GoogleAuth />
+             
 
                         Start Bootstrap
                     </div>

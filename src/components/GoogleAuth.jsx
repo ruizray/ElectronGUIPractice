@@ -12,7 +12,7 @@ class GoogleAuth extends Component {
   renderButton = () => {
     window.gapi.signin2.render("signin-button", {
       scope: "profile email",
-      width: 200,
+      width: 240,
       height: 50,
       longtitle: true,
       theme: "dark",
@@ -59,6 +59,7 @@ class GoogleAuth extends Component {
     this.checkSignedIn().then(signedIn => {
       if (signedIn === false) {
         this.setState({ text: "Not Currently Logged In" })
+        this.renderButton()
       }
       this.setState({ isSignedIn: signedIn })
       this.renderButton()
@@ -72,10 +73,10 @@ class GoogleAuth extends Component {
 
   render() {
     return (
-      <div style={{width:'100%'}} >
+      <div style={{ width: '100%' }} >
 
         <div className="small">{this.state.text}</div>
-        <div style={{width:'100%'}} id="signin-button"></div>
+        <div style={{ width: '100%' }} id="signin-button"></div>
       </div>
 
     );

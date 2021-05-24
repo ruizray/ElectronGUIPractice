@@ -6,9 +6,9 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Input from './../common/Input';
 import html2canvas from 'html2canvas';
-import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf'
-
+import Joi from 'joi-browser'
+import DataRequestForm from './DataRequestForm';
 class Analytics extends Component {
   state = {
     data1: [],
@@ -19,6 +19,8 @@ class Analytics extends Component {
     label2: "Top Pages",
     startDate: '',
     endDate: '',
+    pagecount: 0,
+    errors: {}
   }
   formatDate(date) {
     var day = date.getDate()
@@ -35,6 +37,15 @@ class Analytics extends Component {
     return date.getFullYear() + '-' + month + '-' + day
   }
 
+  parseReject = (response) => {
+  
+    if (response.result.error.code === 401) {
+      alert("Request is missing required authentication credential\nExpected OAuth 2 access token, login cookie or other valid authentication credential.")
+    }
+    //message: "Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project."
+
+  }
+
   parseResults = (response) => {
     console.log(response)
     const queryResult = response.result.reports[0].data.rows;
@@ -44,24 +55,21 @@ class Analytics extends Component {
     const result = queryResult.map((row) => {
       const dateSting = row.dimensions[0];
       const formattedDate = `${dateSting.substring(0, 4).trim().split('\n')}-${dateSting.substring(4, 6).split('\n')}-${dateSting.substring(6, 8).split('\n')}`;
-      console.log(formattedDate)
       data1.push({ x: formattedDate, y: row.metrics[0].values[0].trim() })
     });
     const result1 = queryResult2.map((row) => {
       const dateSting = row.dimensions[0].replace('- Bolingbrook, IL', '').trim();
       data2.push({ x: dateSting, y: row.metrics[0].values[0].trim() })
     });
-    console.log(data1)
-    console.log(data2)
+    const label2 = "Top " + this.state.pagecount + " Pages"
     data2.sort((firstItem, secondItem) => (secondItem.y - firstItem.y));
-    data2 = data2.splice(1, 7);
-    console.log(data2)
-    this.setState({ data1, data2 });
+    data2 = data2.splice(1, this.state.pagecount);
+    this.setState({ data1, data2, label2 });
   };
 
 
 
-  queryReport = (sat) => {
+  queryReport = () => {
 
     window.gapi.client
       .request(
@@ -115,20 +123,21 @@ class Analytics extends Component {
           },
         }
       )
-      .then(this.parseResults, console.error.bind(console));
+      .then(this.parseResults, this.parseReject);
   };
 
-  handleClick = () => {
+  handleSubmit = (pagecount) => {
+    this.setState({pagecount})
     this.queryReport()
   }
 
   handleDownload = () => {
     var input = document.querySelector("#pdf")
-    html2canvas(input, {scrollY: -window.scrollY})
+    html2canvas(input, { scrollY: -window.scrollY })
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF({
-         
+
         });
         const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -154,25 +163,31 @@ class Analytics extends Component {
 
   }
 
+ 
+
   render() {
     return (
 
       <main id="pdf">
 
-        <div class="container-fluid px-4">
+        <div className="container-fluid px-4">
 
-          <GoogleAuth />
-          <h1 className="mt-4">Tables</h1>
+          
+          <h1 className="mt-4">Google Analytics Data For VOB Website</h1>
           <ol className="breadcrumb mb-4">
             <li className="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li className="breadcrumb-item active">Tables</li>
+            <li className="breadcrumb-item active">Google Analytics</li>
           </ol>
-          <div class="card mb-4">
-            <div class="card-body">
-              DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                      <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                      .
-                  </div>
+          <div className="card mb-4">
+            <div className="card-body">
+              This application gets Google Analytics Data using Google Analytics Reporting API v4. In order to retrieve data, users must sign into a Google account that is allowed to retrieve data from the server. Currently, only Ray and James are the only available users.
+              <ol>
+                <li>Select Date range on calendar</li>
+                <li>Fill out other request options</li>
+                <li>Click Send Request Button</li>
+                <li>Click Download Report Button</li>
+              </ol>
+            </div>
           </div>
 
 
@@ -183,25 +198,7 @@ class Analytics extends Component {
 
             </div>
             <div className="col-md-9">
-              <div class="card mb-4">
-                <div class="card-header">
-                  <i class="fas fa-table me-1"></i>
-                      Request Settings
-                  </div>
-                <div className="row mx-4 my-4">
-
-
-                  <form onSubmit={this.handleSubmit} >
-
-                    <Input name="username" label="Username" />
-                    <Input name="password" label="Password" />
-
-                    <button onClick={this.handleClick} className="btn btn-primary mt-2">Send Request</button>
-                    <button onClick={this.handleDownload} className="btn btn-primary mt-2">Download Report</button>
-                  </form>
-                </div>
-              </div>
-
+              <DataRequestForm onSubmit={this.handleSubmit} onDownloadClick={this.handleDownload}/>
 
 
             </div>
