@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import Graph from '../common/Graph'
-import Table from '../common/Table'
 import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css'
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
+import Graph from '../common/Graph'
+import Table from '../common/Table'
 import DataRequestForm from './DataRequestForm'
+import Card from '../common/Card'
+import 'react-calendar/dist/Calendar.css'
+import { faTable } from '@fortawesome/free-solid-svg-icons'
 
 class Analytics extends Component {
   state = {
@@ -124,11 +126,11 @@ class Analytics extends Component {
   }
 
   handleSubmit = pagecount => {
-    if(!this.state.startDate || !this.state.endDate){
-      alert("Must selected date ranges to request data")
+    if (!this.state.startDate || !this.state.endDate) {
+      alert('Must selected date ranges to request data')
     }
     this.setState({ pagecount })
-    
+
     this.queryReport()
   }
 
@@ -165,7 +167,7 @@ class Analytics extends Component {
   }
 
   render() {
-    console.log(this.today);
+    console.log(this.today)
     return (
       <main id="pdf">
         <div className="container-fluid px-4">
@@ -176,6 +178,7 @@ class Analytics extends Component {
             </li>
             <li className="breadcrumb-item active">Google Analytics</li>
           </ol>
+
           <div className="card mb-4">
             <div className="card-body">
               This application gets Google Analytics Data using Google Analytics
@@ -191,8 +194,8 @@ class Analytics extends Component {
             </div>
           </div>
 
-          <div className="row" >
-            <div  className="col-md-3 mb-4">
+          <div className="row">
+            <div className="col-md-3 mb-4">
               <Calendar
                 onChange={this.handleDate}
                 selectRange
@@ -201,10 +204,12 @@ class Analytics extends Component {
               />
             </div>
             <div className="col-md-9">
-              <DataRequestForm
-                onSubmit={this.handleSubmit}
-                onDownloadClick={this.handleDownload}
-              />
+              <Card title={'Request Form'} icon={faTable}>
+                <DataRequestForm
+                  onSubmit={this.handleSubmit}
+                  onDownloadClick={this.handleDownload}
+                />
+              </Card>
             </div>
           </div>
           <div className="row my-4">

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { db } from '../scripts/firebase'
-import _ from 'lodash'
+import { faTable } from '@fortawesome/free-solid-svg-icons'
 import { paginate } from './../scripts/paginate'
 import Pagination from './../common/Pagination'
 import DatabaseTable from './DatabaseTable'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTable } from '@fortawesome/free-solid-svg-icons'
 import DatabaseAddForm from './DatabaseAddForm'
+import Card from '../common/Card'
+import _ from 'lodash'
 
 class Database extends Component {
   state = {
@@ -35,17 +35,6 @@ class Database extends Component {
           this.setState({ categories, posts: data })
         })
       })
-  }
-
-  handleAdd = async () => {
-    //get invenyory collection
-    //get document name as {category}
-    // get model from this.model
-    // get count from this.count
-    // get cost from this.count
-    // get
-
-    
   }
 
   handleUpdate = post => {
@@ -99,25 +88,22 @@ class Database extends Component {
     return { totalCount: filtered.length, posts }
   }
 
-  handleSubmit = ({category, count, cost, model}) => {
-    
-
+  handleSubmit = ({ category, count, cost, model }) => {
     db.collection('inventory')
       .doc(category)
       .set({
+        category,
         model,
         count,
-        cost,
+        cost
       })
       .then(function () {
-        console.log('Document successfully written!')
+        alert("New Field added, refresh page to see changes")
       })
       .catch(function (error) {
         console.error('Error writing document: ', error)
       })
-
   }
-
 
   render() {
     const { length: count } = this.state.posts
@@ -138,16 +124,12 @@ class Database extends Component {
           </li>
           <li class="breadcrumb-item active">Inventory Database Application</li>
         </ol>
+        <Card title={'Add Data'} icon={faTable}>
+          <DatabaseAddForm onSubmit={this.handleSubmit} />
+        </Card>
 
-  <DatabaseAddForm onSubmit={this.handleSubmit}/>
-
-        <div class="card mb-4">
-          <div class="card-header">
-            <FontAwesomeIcon icon={faTable} />
-            Inventory Database
-          </div>
-          <div className="row mx-4 my-4">
-            <p>Showing {totalCount} items in inventory</p>
+        <Card title ={"Inventory Database"} icon={faTable}>
+        <p>Showing {totalCount} items in inventory</p>
             <DatabaseTable
               posts={posts}
               sortColumn={sortColumn}
@@ -160,8 +142,11 @@ class Database extends Component {
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
             />
-          </div>
-        </div>
+          </Card>
+
+
+
+       
       </div>
     )
   }

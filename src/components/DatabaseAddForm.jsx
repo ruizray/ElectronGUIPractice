@@ -1,8 +1,6 @@
 import React from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
-import * as fa from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class DatabaseAddForm extends Form {
   state = {
     data: { category: '', model: '', count: 0, cost: 0},
@@ -25,11 +23,9 @@ class DatabaseAddForm extends Form {
   render() {
     return (
       <React.Fragment>
-        <div className="card mb-4">
-          <div className="card-header">
-            <FontAwesomeIcon icon={fa.faTable} /> Add Data
-          </div>
-          <div className="row mx-4 my-4">
+     
+     
+         
         
             <form onSubmit={this.handleSubmit} autoComplete="off">
                 {this.renderInput('category' , 'Category' , 'text')}
@@ -38,8 +34,8 @@ class DatabaseAddForm extends Form {
                 {this.renderInput('cost' , 'Cost' , 'number')}
                 {this.renderButton('Add')}
             </form>
-          </div>
-        </div>
+    
+  
       </React.Fragment>
     )
   }

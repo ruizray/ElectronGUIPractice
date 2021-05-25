@@ -2,8 +2,7 @@ import React from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
 import GoogleAuth from './GoogleAuth'
-import * as fa from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 class DataRequestForm extends Form {
   state = {
     data: { pagecount: '' },
@@ -24,11 +23,9 @@ class DataRequestForm extends Form {
   render() {
     return (
       <React.Fragment>
-        <div className="card mb-4">
-          <div className="card-header">
-            <FontAwesomeIcon icon={fa.faTable} /> Request Form
-          </div>
-          <div className="row mx-4 my-4">
+      
+      
+          
             <GoogleAuth />
             <form onSubmit={this.handleSubmit} autoComplete="off">
               {this.renderInput('pagecount', 'Pagecount', 'number')}
@@ -37,8 +34,8 @@ class DataRequestForm extends Form {
                 {this.renderDownloadButton('Print Data')}
               </div>
             </form>
-          </div>
-        </div>
+
+
       </React.Fragment>
     )
   }
