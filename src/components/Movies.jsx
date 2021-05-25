@@ -6,7 +6,6 @@ import { paginate } from './../scripts/paginate'
 import ListGroup from '../common/listGroup'
 import { getGenres } from '../scripts/fakeGenreService'
 import _ from 'lodash'
-
 import MoviesTable from './MoviesTable'
 
 class Movies extends Component {
@@ -19,12 +18,13 @@ class Movies extends Component {
     sortColumn: {
       path: 'title',
       order: 'asc'
-    }
+    },
+
   }
-  componentDidMount() {
+  async componentDidMount() {
     const genres = [{ name: 'All Genres' }, ...getGenres()]
     this.setState({ movies: getMovies(), genres })
-    console.log(this.state.movies)
+
   }
 
   handleDelete = movie => {
@@ -84,10 +84,10 @@ class Movies extends Component {
                                 DataTable Example
                             </div>
             <div className="row mx-4 my-4">
-              <div className="col-2 ">
+              <div className="col-md-2">
                 <ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect} />
               </div>
-              <div className="col">
+              <div className="col-md-10">
                 <p>Showing {totalCount} movies in the database</p>
                 <MoviesTable movies={movies} sortColumn={sortColumn} onDelete={this.handleDelete} onSort={this.handleSort} />
               </div>

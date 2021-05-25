@@ -10,6 +10,7 @@ import Counter from './Counters'
 import LoginForm from './LoginForm'
 import Analytics from './Analytics'
 import Settings from './Settings'
+import Database from './Database'
 import { Component } from 'react'
 
 
@@ -123,6 +124,12 @@ class Sidenav extends Component {
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>{' '}
                     Movies Application
+                  </NavLink>
+                  <NavLink className="nav-link" to="/database">
+                    <div className="sb-nav-link-icon">
+                      <FontAwesomeIcon icon={fa.faTachometerAlt} />
+                    </div>{' '}
+                   DataBase Application
                   </NavLink>
 
                   {/* <NavLink className="nav-link" to="/stuff">
@@ -296,6 +303,7 @@ class Sidenav extends Component {
             <Route path="/login" component={LoginForm} />
             <Route path="/analytics" component={Analytics} />
             <Route path="/settings" component={Settings} />
+            <Route path="/database" component={Database} />
             <footer className="py-4 bg-light mt-auto">
               <div className="container-fluid px-4">
                 <div className="d-flex align-items-center justify-content-between small">

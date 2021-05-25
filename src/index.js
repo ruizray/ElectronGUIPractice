@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 
 import './css/styles.css'
 
-import App from "./components/App.jsx";
+import App from "./components/App";
 import { HashRouter } from "react-router-dom";
 
 
