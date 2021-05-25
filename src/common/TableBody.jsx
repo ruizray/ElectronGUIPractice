@@ -1,37 +1,44 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import _ from 'lodash'
 class TableBody extends Component {
-    renderCell = (item, column) => {
-        if (column.content) {
-            return column.content(item)
-        } else {
-            return (_.get(item, column.path))
-        }
-    };
-
-    createKey = (item,column) =>{
-        return item._id + (column.path || column.key)
+  renderCell = (item, column) => {
+    if (column.content) {
+      return column.content(item)
+    } else {
+      return _.get(item, column.path)
     }
+  }
 
-    render() {
-        const { data, columns } = this.props;
+  createKey = (item, column) => {
+    return item._id + (column.path || column.key)
+  }
 
+  render() {
+    const { data, columns } = this.props
 
-        return (
-            <tbody>
-                {data.map(item => <tr key={item._id}>
-                    {columns.map(column => <td key={this.createKey(item,column)}>{this.renderCell(item, column)}</td>)}
-                </tr>)}
-
-            </tbody>);
-    }
+    return (
+      <tbody>
+        {data.map(item => (
+          <tr key={item._id}>
+            {columns.map(column => (
+              <td key={this.createKey(item, column)}>
+                {this.renderCell(item, column)}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    )
+  }
 }
 
-TableBody.defaultProps={
-   data : [{
-    item1: "Attibute 1",
-    item2: "Attribute 2",
-  }]
+TableBody.defaultProps = {
+  data: [
+    {
+      item1: 'Attibute 1',
+      item2: 'Attribute 2'
+    }
+  ]
 }
 
-export default TableBody;
+export default TableBody

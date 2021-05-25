@@ -49,7 +49,7 @@ class Analytics extends Component {
     const queryResult2 = response.result.reports[1].data.rows
     let data1 = []
     let data2 = []
-    const result = queryResult.map(row => {
+    queryResult.map(row => {
       const dateSting = row.dimensions[0]
       const formattedDate = `${dateSting
         .substring(0, 4)
@@ -59,7 +59,7 @@ class Analytics extends Component {
         .split('\n')}`
       data1.push({ x: formattedDate, y: row.metrics[0].values[0].trim() })
     })
-    const result1 = queryResult2.map(row => {
+    queryResult2.map(row => {
       const dateSting = row.dimensions[0]
         .replace('- Bolingbrook, IL', '')
         .trim()
@@ -124,6 +124,9 @@ class Analytics extends Component {
   }
 
   handleSubmit = pagecount => {
+    if(!this.state.startDate || !this.state.endDate){
+      alert("Must selected date ranges to request data")
+    }
     this.setState({ pagecount })
     
     this.queryReport()

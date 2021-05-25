@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import  Joi from 'joi-browser';
 import Input from './Input'
-import * as fa from '@fortawesome/free-solid-svg-icons'
 class Form extends Component {
     state = {
         data: {},
@@ -15,6 +14,8 @@ class Form extends Component {
         const errors = {}
         for (let item of error.details)
             errors[item.path[0]] = item.message;
+
+            console.log(errors)
         return errors;
     };
     validateProperty = ({ name, value }) => {
@@ -55,12 +56,10 @@ class Form extends Component {
         return <button type={type} disabled={this.validate()} onClick={this.handleDownload} className="btn btn-primary mt-2">{label}</button>
     }
 
-    renderInput(name, label, type = "text"){
+    renderInput(name, label, type){
         const {data, errors} = this.state;
         return <Input name={name} label={label} type={type} value={data[name]}  onChange={this.handleChange} error={errors[name]} />
     }
-
-
 }
 
 export default Form;

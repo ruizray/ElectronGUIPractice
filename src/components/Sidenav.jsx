@@ -11,6 +11,7 @@ import LoginForm from './LoginForm'
 import Analytics from './Analytics'
 import Settings from './Settings'
 import Database from './Database'
+import PrivacyPolicy from './PrivacyPolicy'
 import { Component } from 'react'
 
 
@@ -86,10 +87,10 @@ class Sidenav extends Component {
                 style={{ right: 0, left: 'auto' }}
               >
                 <li>
-                  <NavLink className="nav-link" to="/settings">
-                    <a className="dropdown-item" href="#!">
+                  <NavLink  className=" dropdown-item" to="/settings">
+                  
                       Settings
-                    </a>
+              
                   </NavLink>
                 </li>
                 <li>
@@ -304,6 +305,7 @@ class Sidenav extends Component {
             <Route path="/analytics" component={Analytics} />
             <Route path="/settings" component={Settings} />
             <Route path="/database" component={Database} />
+            <Route path="/privacyPolicy" component={PrivacyPolicy} />
             <footer className="py-4 bg-light mt-auto">
               <div className="container-fluid px-4">
                 <div className="d-flex align-items-center justify-content-between small">
@@ -311,7 +313,7 @@ class Sidenav extends Component {
                     Copyright &copy; Raymundo Ruiz
                   </div>
                   <div>
-                    <a href="#">Privacy Policy</a>
+                    <NavLink classname="nav-link" to="/privacyPolicy">Privacy Policy</NavLink>
                     &middot;
                     <a href="#">Terms &amp; Conditions</a>
                   </div>

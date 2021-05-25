@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import Pagination from '../common/Pagination'
 import { getMovies } from '../scripts/fakeMovieService'
 import { paginate } from './../scripts/paginate'
