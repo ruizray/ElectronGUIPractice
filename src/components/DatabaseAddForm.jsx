@@ -9,8 +9,8 @@ class DatabaseAddForm extends Form {
 
   schema = {
     count: Joi.number().greater(-1).required(),
-    category: Joi.required(),
-    model: Joi.required(),
+    category: Joi.string().min(1).required(),
+    model: Joi.string().min(1).required(),
     cost : Joi.number().required()
     
   }

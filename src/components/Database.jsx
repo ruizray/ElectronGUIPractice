@@ -22,7 +22,7 @@ class Database extends Component {
     }
   }
 
-  async componentDidMount() {
+  handleClick = () => {
     var categories = []
     db.collection('inventory')
       .get()
@@ -35,6 +35,8 @@ class Database extends Component {
           this.setState({ categories, posts: data })
         })
       })
+
+      
   }
 
   handleUpdate = post => {
@@ -98,7 +100,7 @@ class Database extends Component {
         cost
       })
       .then(function () {
-        alert("New Field added, refresh page to see changes")
+        alert('New Field added, refresh page to see changes')
       })
       .catch(function (error) {
         console.error('Error writing document: ', error)
@@ -108,7 +110,7 @@ class Database extends Component {
   render() {
     const { length: count } = this.state.posts
     const { pageSize, currentPage, sortColumn } = this.state
-    if (count === 0) return <p>There are no posts in the database.</p>
+
     const { totalCount, posts } = this.getPagedData()
 
     console.log(posts, totalCount)
@@ -128,25 +130,21 @@ class Database extends Component {
           <DatabaseAddForm onSubmit={this.handleSubmit} />
         </Card>
 
-        <Card title ={"Inventory Database"} icon={faTable}>
-        <p>Showing {totalCount} items in inventory</p>
-            <DatabaseTable
-              posts={posts}
-              sortColumn={sortColumn}
-              onDelete={this.handleDelete}
-              onSort={this.handleSort}
-            />
-            <Pagination
-              itemsCount={totalCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              onPageChange={this.handlePageChange}
-            />
-          </Card>
-
-
-
-       
+        <Card title={'Inventory Database'} icon={faTable}>
+          <p>Showing {totalCount} items in inventory</p>
+          <DatabaseTable
+            posts={posts}
+            sortColumn={sortColumn}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+          />
+          <Pagination
+            itemsCount={totalCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
+          />
+        </Card>
       </div>
     )
   }
