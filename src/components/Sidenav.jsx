@@ -1,4 +1,4 @@
-import React ,{ Component } from 'react'
+import React, { Component } from 'react'
 import { Route, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as fa from '@fortawesome/free-solid-svg-icons'
@@ -11,24 +11,30 @@ import Settings from './Settings'
 import Database from './Database'
 import PrivacyPolicy from './PrivacyPolicy'
 import TopNav from './TopNav'
-import Signup from './Signup';
 
-
+import firebase from 'firebase'
+import 'firebase/firestore'
+import 'firebase/auth'
 
 
 class Sidenav extends Component {
   state = {
-    dropdownToggled: false
-    
+    dropdownToggled: false,
+    user: this.props.user
   }
 
-
+  getUser = () => {
+    console.log(this.props.user)
+    return this.state.user.displayName
+  }
+  
+  
 
   render() {
+ 
     return (
       <React.Fragment>
-        
-      <TopNav onToggle = {this.props.onToggle}/>
+        <TopNav onToggle={this.props.onToggle} />
         <div id="layoutSidenav">
           <div id="layoutSidenav_nav">
             <nav
@@ -38,18 +44,18 @@ class Sidenav extends Component {
               <div className="sb-sidenav-menu">
                 <div className="nav">
                   <div className="sb-sidenav-menu-heading">Core</div>
-                  {/* <NavLink className="nav-link" to="/login">
+                   {/* <NavLink className="nav-link" to="/login">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>
                     Login Form
-                  </NavLink>  */}
+                  </NavLink>  
                   <NavLink className="nav-link" to="/login2">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>
                     Login Form
-                  </NavLink>
+                  </NavLink> */}
                   <NavLink className="nav-link" to="/movies">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
@@ -60,7 +66,7 @@ class Sidenav extends Component {
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>{' '}
-                   DataBase Application
+                    DataBase Application
                   </NavLink>
 
                   {/* <NavLink className="nav-link" to="/stuff">
@@ -75,7 +81,7 @@ class Sidenav extends Component {
                     </div>
                     Counter Example
                   </NavLink> */}
-                  
+
                   <NavLink className="nav-link" to="/analytics">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
@@ -219,10 +225,14 @@ class Sidenav extends Component {
                   </a> */}
                 </div>
               </div>
-              <div className="sb-sidenav-footer">Start Bootstrap</div>
+              <div className="sb-sidenav-footer">
+                {this.getUser()}
+              </div>
             </nav>
           </div>
           <div id="layoutSidenav_content">
+            <Route exact path="/!" component={Analytics} />
+            <Route exact path="/" component={Analytics} />
             <Route exact path="/movies" component={Movies} />
             <Route path="/stuff" component={Stuff} />
             <Route path="/counter" component={Counter} />
@@ -231,8 +241,11 @@ class Sidenav extends Component {
             <Route path="/settings" component={Settings} />
             <Route path="/database" component={Database} />
             <Route path="/privacyPolicy" component={PrivacyPolicy} />
-            <Route path="/login2" component={Signup} />
-          
+            <Route
+              path="/login2"
+           
+            />
+
             <footer className="py-4 bg-light mt-auto">
               <div className="container-fluid px-4">
                 <div className="d-flex align-items-center justify-content-between small">
@@ -240,7 +253,9 @@ class Sidenav extends Component {
                     Copyright &copy; Raymundo Ruiz
                   </div>
                   <div>
-                    <NavLink classname="nav-link" to="/privacyPolicy">Privacy Policy</NavLink>
+                    <NavLink classname="nav-link" to="/privacyPolicy">
+                      Privacy Policy
+                    </NavLink>
                     &middot;
                     <a href="#">Terms &amp; Conditions</a>
                   </div>

@@ -22,6 +22,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^8.6.2",
     "firebase-tools": "^9.11.0",
+    "firebaseui": "^4.8.0",
     "glob": "^7.1.7",
     "html2canvas": "^1.0.0-rc.7",
     "joi": "^17.4.0",

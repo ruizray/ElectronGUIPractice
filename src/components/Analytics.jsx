@@ -30,7 +30,6 @@ class Analytics extends Component {
     if (month < 10) {
       month = '0' + month
     }
-
     return date.getFullYear() + '-' + month + '-' + day
   }
 
@@ -124,11 +123,11 @@ class Analytics extends Component {
   }
 
   handleSubmit = pagecount => {
-    if(!this.state.startDate || !this.state.endDate){
-      alert("Must selected date ranges to request data")
+    if (!this.state.startDate || !this.state.endDate) {
+      alert('Must selected date ranges to request data')
     }
     this.setState({ pagecount })
-    
+
     this.queryReport()
   }
 
@@ -165,7 +164,7 @@ class Analytics extends Component {
   }
 
   render() {
-    console.log(this.today);
+    console.log(this.today)
     return (
       <main id="pdf">
         <div className="container-fluid px-4">
@@ -191,8 +190,8 @@ class Analytics extends Component {
             </div>
           </div>
 
-          <div className="row" >
-            <div  className="col-md-3 mb-4">
+          <div className="row">
+            <div className="col-md-3 mb-4">
               <Calendar
                 onChange={this.handleDate}
                 selectRange
