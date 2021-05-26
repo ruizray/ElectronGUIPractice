@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Sidenav from './Sidenav'
-import { useHistory } from "react-router-dom";
+import { useHistory , Redirect} from "react-router-dom";
 
 import {
   useAuthState,
@@ -50,7 +50,7 @@ const App = () => {
     )
   }
   if (user) {
-      history.push('/')
+      
     return (
       <React.Fragment>
         <div
@@ -61,7 +61,7 @@ const App = () => {
           }
         >
           <Sidenav user={user} onToggle={handleNavToggle} />
-          
+          <Redirect to="/" />
         </div>
       </React.Fragment>
     )

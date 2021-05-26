@@ -43,7 +43,6 @@ class Analytics extends Component {
   }
 
   parseResults = response => {
-    console.log(response)
     const queryResult = response.result.reports[0].data.rows
     const queryResult2 = response.result.reports[1].data.rows
     let data1 = []
@@ -156,7 +155,6 @@ class Analytics extends Component {
   ]
 
   handleDate = e => {
-    console.log(e[0], e[1])
     var date1 = this.formatDate(e[0])
     var date2 = this.formatDate(e[1])
     const label1 = 'Total site visits from: ' + date1 + ' to ' + date2
@@ -164,7 +162,7 @@ class Analytics extends Component {
   }
 
   render() {
-    console.log(this.today)
+ 
     return (
       <main id="pdf">
         <div className="container-fluid px-4">

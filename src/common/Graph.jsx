@@ -69,9 +69,9 @@ class Graph extends Component {
     if (type === 'bar') {
       return <FontAwesomeIcon icon={fa.faChartBar} />
     } else if (type === 'line') {
-        return <FontAwesomeIcon icon={fa.faChartLine} />
+      return <FontAwesomeIcon icon={fa.faChartLine} />
     } else if (type === 'pie') {
-        return <FontAwesomeIcon icon={fa.faChartPie} />
+      return <FontAwesomeIcon icon={fa.faChartPie} />
     }
   }
 
@@ -103,8 +103,6 @@ class Graph extends Component {
   }
   render() {
     const { data, title } = this.props
-
-    console.log(this.props)
 
     return (
       <React.Fragment>
