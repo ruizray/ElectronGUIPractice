@@ -11,6 +11,7 @@ const Login = props => {
   const auth = firebase.auth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [credential , setCredential] = useState('')
   const [signInWithEmailAndPassword, loading, error] =
     useSignInWithEmailAndPassword(auth, email, password)
 
@@ -22,7 +23,8 @@ const Login = props => {
         var credential = result.credential
         var token = credential.accessToken
         var user = result.user
-        console.log(token, user.displayName, user.email, user)
+        setCredential(token)
+        console.log(token)
       })
       .catch(error => {
         alert(error)

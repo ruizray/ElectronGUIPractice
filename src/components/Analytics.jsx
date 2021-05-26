@@ -70,6 +70,12 @@ class Analytics extends Component {
   }
 
   queryReport = () => {
+  
+    window.gapi.analytics.auth.authorize({    
+      serverAuth: {       
+        access_token: this.props.authToken     
+      }  
+    });
     window.gapi.client
       .request({
         path: '/v4/reports:batchGet',

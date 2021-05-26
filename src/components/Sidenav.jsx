@@ -16,7 +16,6 @@ import firebase from 'firebase'
 import 'firebase/firestore'
 import 'firebase/auth'
 
-
 class Sidenav extends Component {
   state = {
     dropdownToggled: false,
@@ -27,11 +26,8 @@ class Sidenav extends Component {
     console.log(this.props.user)
     return this.state.user.displayName
   }
-  
-  
 
   render() {
- 
     return (
       <React.Fragment>
         <TopNav onToggle={this.props.onToggle} />
@@ -44,7 +40,7 @@ class Sidenav extends Component {
               <div className="sb-sidenav-menu">
                 <div className="nav">
                   <div className="sb-sidenav-menu-heading">Core</div>
-                   {/* <NavLink className="nav-link" to="/login">
+                  {/* <NavLink className="nav-link" to="/login">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>
@@ -225,9 +221,7 @@ class Sidenav extends Component {
                   </a> */}
                 </div>
               </div>
-              <div className="sb-sidenav-footer">
-                {this.getUser()}
-              </div>
+              <div className="sb-sidenav-footer">{this.getUser()}</div>
             </nav>
           </div>
           <div id="layoutSidenav_content">
@@ -237,14 +231,14 @@ class Sidenav extends Component {
             <Route path="/stuff" component={Stuff} />
             <Route path="/counter" component={Counter} />
             <Route path="/login" component={LoginForm} />
-            <Route path="/analytics" component={Analytics} />
+            <Route
+              path="/analytics"
+              render={props => <Analytics userinfo={this.state.user} />}
+            />
             <Route path="/settings" component={Settings} />
             <Route path="/database" component={Database} />
             <Route path="/privacyPolicy" component={PrivacyPolicy} />
-            <Route
-              path="/login2"
-           
-            />
+            <Route path="/login2" />
 
             <footer className="py-4 bg-light mt-auto">
               <div className="container-fluid px-4">
