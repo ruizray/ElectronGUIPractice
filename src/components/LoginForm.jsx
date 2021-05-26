@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
 class LoginForm extends Form {
@@ -17,7 +17,7 @@ class LoginForm extends Form {
   }
 
   render() {
-    const { data, errors } = this.state
+
 
     return (
       <React.Fragment>
@@ -29,7 +29,7 @@ class LoginForm extends Form {
             </li>
             <li class="breadcrumb-item active">Login Form</li>
           </ol>
-
+        
           <div class="card mb-4">
             <div class="card-header">
               <i class="fas fa-table me-1"></i>
