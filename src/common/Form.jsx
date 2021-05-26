@@ -48,17 +48,17 @@ class Form extends Component {
     };
 
 
-    renderButton(label, ref){
-        return <button ref={ref} disabled={this.validate()} className="btn btn-primary mt-2">{label}</button>
+    renderButton(label){
+        return <button disabled={this.validate()} className="btn btn-primary mt-2">{label}</button>
     }
 
-    renderDownloadButton(label, type="button", ref){
+    renderDownloadButton(label, type="button"){
         return <button type={type} disabled={this.validate()} onClick={this.handleDownload} className="btn btn-primary mt-2">{label}</button>
     }
 
-    renderInput(name, label, type, ref){
+    renderInput(name, label, type){
         const {data, errors} = this.state;
-        return <Input ref={ref} name={name} label={label} type={type} value={data[name]}  onChange={this.handleChange} error={errors[name]} />
+        return <Input name={name} label={label} type={type} value={data[name]}  onChange={this.handleChange} error={errors[name]} />
     }
 }
 
