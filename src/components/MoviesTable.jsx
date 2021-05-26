@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Table from '../common/Table/Table'
+import Table from '../common/Table'
 
 
 class MoviesTable extends Component {

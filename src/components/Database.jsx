@@ -5,14 +5,15 @@ import _ from 'lodash'
 import { paginate } from './../scripts/paginate'
 import Pagination from './../common/Pagination'
 import DatabaseTable from './DatabaseTable'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTable } from '@fortawesome/free-solid-svg-icons'
 import DatabaseAddForm from './DatabaseAddForm'
-import Card from '../common/Card'
+
 class Database extends Component {
   state = {
     posts: [],
     categories: [],
-    pageSize: 2,
+    pageSize: 5,
     currentPage: 1,
     selectedCategory: '',
     sortColumn: {
@@ -21,7 +22,7 @@ class Database extends Component {
     }
   }
 
-  handleGetDatabase = () => {
+  async componentDidMount() {
     var categories = []
     db.collection('inventory')
       .get()
@@ -36,7 +37,16 @@ class Database extends Component {
       })
   }
 
+  handleAdd = async () => {
+    //get invenyory collection
+    //get document name as {category}
+    // get model from this.model
+    // get count from this.count
+    // get cost from this.count
+    // get
 
+    
+  }
 
   handleUpdate = post => {
     console.log('Update', post)
@@ -44,7 +54,7 @@ class Database extends Component {
 
   handleDelete = post => {
     const posts = this.state.posts.filter(
-      m =>( m.category !== post.category ) && (post.model !== m.model)
+      m => m.category !== post.category && post.model !== m.model
     )
     db.collection('inventory')
       .doc(post.category)
@@ -85,16 +95,16 @@ class Database extends Component {
       : allPosts
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
     const posts = paginate(sorted, currentPage, pageSize)
+    console.log(sorted, posts, allPosts)
     return { totalCount: filtered.length, posts }
   }
 
-  handleSubmit = ({ category, count, cost, model }) => {
-
+  handleSubmit = ({category, count, cost, model}) => {
+    
 
     db.collection('inventory')
       .doc(category)
       .set({
-        category,
         model,
         count,
         cost,
@@ -110,10 +120,12 @@ class Database extends Component {
 
 
   render() {
-
+    const { length: count } = this.state.posts
     const { pageSize, currentPage, sortColumn } = this.state
+    if (count === 0) return <p>There are no posts in the database.</p>
     const { totalCount, posts } = this.getPagedData()
 
+    console.log(posts, totalCount)
 
     return (
       <div class="container-fluid px-4">
@@ -126,25 +138,31 @@ class Database extends Component {
           </li>
           <li class="breadcrumb-item active">Inventory Database Application</li>
         </ol>
-        <Card title="Add Data" icon={faTable} >
-          <DatabaseAddForm onSubmit={this.handleSubmit} />
-        </Card>
 
-        <Card title="Inventory database" icon={faTable}>
-          <div className="col-md-2">
-          <button className="btn btn-secondary" onClick={this.handleGetDatabase}>Get Database </button>
+  <DatabaseAddForm onSubmit={this.handleSubmit}/>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <FontAwesomeIcon icon={faTable} />
+            Inventory Database
           </div>
-          <p>Showing {totalCount} items in inventory</p>
-          <DatabaseTable posts={posts} sortColumn={sortColumn} onDelete={this.handleDelete} onSort={this.handleSort} />
-          <Pagination
-            itemsCount={totalCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            onPageChange={this.handlePageChange}
-          />
-        </Card>
+          <div className="row mx-4 my-4">
+            <p>Showing {totalCount} items in inventory</p>
+            <DatabaseTable
+              posts={posts}
+              sortColumn={sortColumn}
+              onDelete={this.handleDelete}
+              onSort={this.handleSort}
+            />
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
+          </div>
+        </div>
       </div>
-
     )
   }
 }
