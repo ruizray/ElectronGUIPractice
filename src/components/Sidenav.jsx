@@ -11,13 +11,15 @@ import Settings from './Settings'
 import Database from './Database'
 import PrivacyPolicy from './PrivacyPolicy'
 import TopNav from './TopNav'
-import Signup from './Signup'
+import Signup from './Signup';
+
 
 
 
 class Sidenav extends Component {
   state = {
     dropdownToggled: false
+    
   }
 
 
@@ -230,6 +232,7 @@ class Sidenav extends Component {
             <Route path="/database" component={Database} />
             <Route path="/privacyPolicy" component={PrivacyPolicy} />
             <Route path="/login2" component={Signup} />
+          
             <footer className="py-4 bg-light mt-auto">
               <div className="container-fluid px-4">
                 <div className="d-flex align-items-center justify-content-between small">

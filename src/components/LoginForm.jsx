@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
-import {signInWithGoogle} from '../scripts/firebase'
+
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faGoogle} from '@fortawesome/free-brands-svg-icons' 
 class LoginForm extends Form {
@@ -44,7 +44,7 @@ class LoginForm extends Form {
                 {this.renderInput('username', 'Username')}
                 {this.renderInput('password', 'Password', 'password')}
                 {this.renderButton('Login')}
-               <FontAwesomeIcon style={{height:100}} onClick={signInWithGoogle} icon={faGoogle}/>
+               <FontAwesomeIcon style={{height:100}}  icon={faGoogle}/>
               </form>
              
             </div>

@@ -2,30 +2,25 @@ import React, { Component } from 'react';
 import Sidenav from './Sidenav';
 
 
-class App extends Component {
-    state = {
-        navToggled: false,
-        dropdownToggled : false,
-    }
 
-    handleNavToggle = () => {
-        this.setState({ navToggled: !this.state.navToggled })
+
+const App = () => {
+
+    const [toggled, handleNavtoggled] = React.useState(false)
+
+    const handleNavToggle = () => {
+        handleNavtoggled(!toggled)
+        
     };
-
-    
-
-    render() {
-        return (
-            <React.Fragment>
-                <div className={this.state.navToggled === true ? "sb-nav-fixed sb-sidenav-toggled" : "sb-nav-fixed"}>
+    return (<React.Fragment>
+        <div className={toggled === true ? "sb-nav-fixed sb-sidenav-toggled" : "sb-nav-fixed"}>
 
 
-                    <Sidenav onToggle={this.handleNavToggle} />
-                </div>
+            <Sidenav onToggle={handleNavToggle} />
+        </div>
 
-            </React.Fragment>
-        );
-    }
+    </React.Fragment>);
 }
 
 export default App;
+
