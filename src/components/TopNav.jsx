@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as fa from '@fortawesome/free-solid-svg-icons'
+import "firebase/auth"
+
+
 class TopNav extends Component {
 
     state = {
@@ -16,6 +19,7 @@ class TopNav extends Component {
     return( 
 
 <nav className = "sb-topnav navbar navbar-expand navbar-dark bg-dark" >
+    
           <NavLink style={{ paddingLeft: 0 }} className="nav-link" to="/movies">
             {' '}
             <h1 className="navbar-brand ps-3">React Examples</h1>

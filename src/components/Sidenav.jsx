@@ -11,6 +11,8 @@ import Settings from './Settings'
 import Database from './Database'
 import PrivacyPolicy from './PrivacyPolicy'
 import TopNav from './TopNav'
+import Signup from './Signup'
+
 
 
 class Sidenav extends Component {
@@ -34,6 +36,18 @@ class Sidenav extends Component {
               <div className="sb-sidenav-menu">
                 <div className="nav">
                   <div className="sb-sidenav-menu-heading">Core</div>
+                  {/* <NavLink className="nav-link" to="/login">
+                    <div className="sb-nav-link-icon">
+                      <FontAwesomeIcon icon={fa.faTachometerAlt} />
+                    </div>
+                    Login Form
+                  </NavLink>  */}
+                  <NavLink className="nav-link" to="/login2">
+                    <div className="sb-nav-link-icon">
+                      <FontAwesomeIcon icon={fa.faTachometerAlt} />
+                    </div>
+                    Login Form
+                  </NavLink>
                   <NavLink className="nav-link" to="/movies">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
@@ -59,12 +73,7 @@ class Sidenav extends Component {
                     </div>
                     Counter Example
                   </NavLink> */}
-                  {/* <NavLink className="nav-link" to="/login">
-                    <div className="sb-nav-link-icon">
-                      <FontAwesomeIcon icon={fa.faTachometerAlt} />
-                    </div>
-                    Login Form
-                  </NavLink> */}
+                  
                   <NavLink className="nav-link" to="/analytics">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
@@ -220,6 +229,7 @@ class Sidenav extends Component {
             <Route path="/settings" component={Settings} />
             <Route path="/database" component={Database} />
             <Route path="/privacyPolicy" component={PrivacyPolicy} />
+            <Route path="/login2" component={Signup} />
             <footer className="py-4 bg-light mt-auto">
               <div className="container-fluid px-4">
                 <div className="d-flex align-items-center justify-content-between small">

@@ -4,7 +4,7 @@ import Form from '../common/Form'
 
 class DatabaseAddForm extends Form {
   state = {
-    data: { category: '', model: '', count: 0, cost: 0},
+    data: { category: '', model: '', count: 0, cost: 0 },
     errors: {}
   }
 
@@ -12,25 +12,39 @@ class DatabaseAddForm extends Form {
     count: Joi.number().greater(-1).required(),
     category: Joi.required(),
     model: Joi.required(),
-    cost : Joi.number().required()
-    
+    cost: Joi.number().required()
+
   }
 
   doSubmit = () => {
     this.props.onSubmit(this.state.data)
   }
- 
+
 
   render() {
     return (
       <React.Fragment>
-            <form onSubmit={this.handleSubmit} autoComplete="off">
-                {this.renderInput('category' , 'Category' , 'text')}
-                {this.renderInput('model' , 'Model' , 'text')}
-                {this.renderInput('count' , 'Count' , 'number')}
-                {this.renderInput('cost' , 'Cost' , 'number')}
-                {this.renderButton('Add')}
-            </form>
+        <form onSubmit={this.handleSubmit} autoComplete="off">
+          <div className="form-group">
+            <div className="row">
+              <div className="col-md-auto">
+                {this.renderInput('category', 'Category', 'text')}
+              </div>
+              <div className="col-md-auto">
+                {this.renderInput('model', 'Model', 'text')}
+              </div>
+
+              <div className="col-md-auto">
+                {this.renderInput('count', 'Count', 'number')}
+              </div>
+              <div className="col-md-auto">
+                {this.renderInput('cost', 'Cost', 'number')}
+              </div>
+            </div>
+
+            {this.renderButton('Add')}
+          </div>
+        </form>
       </React.Fragment>
     )
   }

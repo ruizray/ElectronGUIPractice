@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
+import {signInWithGoogle} from '../scripts/firebase'
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faGoogle} from '@fortawesome/free-brands-svg-icons' 
 class LoginForm extends Form {
   state = {
     data: { username: '', password: '' },
@@ -17,7 +20,7 @@ class LoginForm extends Form {
   }
 
   render() {
-
+    const { data, errors } = this.state
 
     return (
       <React.Fragment>
@@ -29,7 +32,7 @@ class LoginForm extends Form {
             </li>
             <li class="breadcrumb-item active">Login Form</li>
           </ol>
-        
+
           <div class="card mb-4">
             <div class="card-header">
               <i class="fas fa-table me-1"></i>
@@ -40,9 +43,10 @@ class LoginForm extends Form {
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput('username', 'Username')}
                 {this.renderInput('password', 'Password', 'password')}
-
                 {this.renderButton('Login')}
+               <FontAwesomeIcon style={{height:100}} onClick={signInWithGoogle} icon={faGoogle}/>
               </form>
+             
             </div>
           </div>
         </div>

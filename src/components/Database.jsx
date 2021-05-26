@@ -12,7 +12,7 @@ class Database extends Component {
   state = {
     posts: [],
     categories: [],
-    pageSize: 5,
+    pageSize: 2,
     currentPage: 1,
     selectedCategory: '',
     sortColumn: {
@@ -44,7 +44,7 @@ class Database extends Component {
 
   handleDelete = post => {
     const posts = this.state.posts.filter(
-      m => m.category !== post.category && post.model !== m.model
+      m =>( m.category !== post.category ) && (post.model !== m.model)
     )
     db.collection('inventory')
       .doc(post.category)
@@ -94,6 +94,7 @@ class Database extends Component {
     db.collection('inventory')
       .doc(category)
       .set({
+        category,
         model,
         count,
         cost,
