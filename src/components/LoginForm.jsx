@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
+
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faGoogle} from '@fortawesome/free-brands-svg-icons' 
 class LoginForm extends Form {
   state = {
     data: { username: '', password: '' },
@@ -40,9 +43,10 @@ class LoginForm extends Form {
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput('username', 'Username')}
                 {this.renderInput('password', 'Password', 'password')}
-
                 {this.renderButton('Login')}
+               <FontAwesomeIcon style={{height:100}}  icon={faGoogle}/>
               </form>
+             
             </div>
           </div>
         </div>

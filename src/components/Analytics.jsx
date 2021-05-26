@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Graph from '../common/Graph'
-import Table from '../common/Table'
+import Table from '../common/Table/Table'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import html2canvas from 'html2canvas'
