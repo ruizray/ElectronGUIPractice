@@ -10,25 +10,20 @@ import Analytics from './Analytics'
 import Database from './Database/Database'
 import PrivacyPolicy from './PrivacyPolicy'
 import TopNav from './TopNav'
+import ChatRoom from '../common/Chat/Chatroom'
 
-import 'firebase/firestore'
-import 'firebase/auth'
 import UserContext, { UserConsumer } from '../contexts/UserContext'
 import UserInfoPage from '../common/UserInfoPage'
 
-
 class Dashboard extends Component {
   state = {
-    dropdownToggled: false,
-
+    dropdownToggled: false
   }
-
-
 
   render() {
     return (
       <UserConsumer>
-        {UserContext =>
+        {UserContext => (
           <React.Fragment>
             <TopNav onToggle={this.props.onToggle} />
             <div id="layoutSidenav">
@@ -56,14 +51,20 @@ class Dashboard extends Component {
                         <div className="sb-nav-link-icon">
                           <FontAwesomeIcon icon={fa.faTachometerAlt} />
                         </div>{' '}
-                    Movies Application
-                  </NavLink>
+                        Movies Application
+                      </NavLink>
+                      <NavLink className="nav-link" to="/chatroom">
+                        <div className="sb-nav-link-icon">
+                          <FontAwesomeIcon icon={fa.faTachometerAlt} />
+                        </div>{' '}
+                        Chat Room
+                      </NavLink>
                       <NavLink className="nav-link" to="/database">
                         <div className="sb-nav-link-icon">
                           <FontAwesomeIcon icon={fa.faTachometerAlt} />
                         </div>{' '}
-                    DataBase Application
-                  </NavLink>
+                        DataBase Application
+                      </NavLink>
 
                       {/* <NavLink className="nav-link" to="/stuff">
                     <div className="sb-nav-link-icon">
@@ -82,8 +83,8 @@ class Dashboard extends Component {
                         <div className="sb-nav-link-icon">
                           <FontAwesomeIcon icon={fa.faTachometerAlt} />
                         </div>
-                    Google Analytics
-                  </NavLink>
+                        Google Analytics
+                      </NavLink>
                       {/* <div className="sb-sidenav-menu-heading">Interface</div>
                   <a
                     className="nav-link collapsed"
@@ -221,7 +222,10 @@ class Dashboard extends Component {
                   </a> */}
                     </div>
                   </div>
-                  <div className="sb-sidenav-footer"> {'Logged in as \n' + UserContext.user.displayName}</div>
+                  <div className="sb-sidenav-footer">
+                    {' '}
+                    {'Logged in as \n' + UserContext.user.displayName}
+                  </div>
                 </nav>
               </div>
               <div id="layoutSidenav_content">
@@ -236,6 +240,7 @@ class Dashboard extends Component {
                   render={props => <Analytics userinfo={this.state.user} />}
                 />
                 <Route path="/userInfo" component={UserInfoPage} />
+                <Route path="/chatroom" component={ChatRoom} />
                 <Route path="/database" component={Database} />
                 <Route path="/privacyPolicy" component={PrivacyPolicy} />
                 <Route path="/login2" />
@@ -245,13 +250,13 @@ class Dashboard extends Component {
                     <div className="d-flex align-items-center justify-content-between small">
                       <div className="text-muted">
                         Copyright &copy; Raymundo Ruiz
-                  </div>
+                      </div>
                       <div>
                         <NavLink classname="nav-link" to="/privacyPolicy">
                           Privacy Policy
-                    </NavLink>
-                    &middot;
-                    <a href="#">Terms &amp; Conditions</a>
+                        </NavLink>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
                       </div>
                     </div>
                   </div>
@@ -259,12 +264,11 @@ class Dashboard extends Component {
               </div>
             </div>
           </React.Fragment>
-        }
+        )}
       </UserConsumer>
     )
   }
 }
-
 
 Dashboard.contextType = UserContext
 export default Dashboard

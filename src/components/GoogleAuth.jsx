@@ -7,7 +7,9 @@ class GoogleAuth extends Component {
   }
 
   componentDidMount() {
-    window.gapi.load("auth2", this.init());
+    window.gapi.load("analytics", this.init());
+
+    
   }
   renderButton = () => {
     window.gapi.signin2.render("signin-button", {
