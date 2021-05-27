@@ -1,7 +1,7 @@
 import React from 'react'
 import Joi from 'joi-browser'
-import Form from '../common/Form'
-import GoogleAuth from './GoogleAuth'
+import Form from '../../common/Form'
+import GoogleAuth from '../GoogleAuth'
 import * as fa from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class DataRequestForm extends Form {

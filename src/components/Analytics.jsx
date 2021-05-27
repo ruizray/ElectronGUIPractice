@@ -5,9 +5,9 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
-import DataRequestForm from './DataRequestForm'
+import DataRequestForm from './Database/DataRequestForm'
 import UserContext ,{UserConsumer} from './../contexts/UserContext';
-import GoogleAuth from './GoogleAuth'
+
 class Analytics extends Component {
   state = {
     data1: [],

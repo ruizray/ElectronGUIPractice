@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 
 import _ from 'lodash'
-import { paginate } from './../scripts/paginate'
-import Pagination from './../common/Pagination'
+import { paginate } from '../../scripts/paginate'
+import Pagination from '../../common/Pagination'
 import DatabaseTable from './DatabaseTable'
 import { faTable } from '@fortawesome/free-solid-svg-icons'
 import DatabaseAddForm from './DatabaseAddForm'
-import Card from '../common/Card'
-import UserContext, { UserConsumer } from './../contexts/UserContext';
+import Card from '../../common/Card'
+import UserContext, { UserConsumer } from '../../contexts/UserContext';
 import firebase from 'firebase'
-import { getFirestore } from "firebase/firestore"
+
 class Database extends Component {
   state = {
     posts: [],

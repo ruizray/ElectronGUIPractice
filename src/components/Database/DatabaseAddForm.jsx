@@ -1,6 +1,6 @@
 import React from 'react'
 import Joi from 'joi-browser'
-import Form from '../common/Form'
+import Form from '../../common/Form'
 
 class DatabaseAddForm extends Form {
   state = {

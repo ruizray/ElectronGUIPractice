@@ -7,15 +7,14 @@ import Stuff from './Stuff'
 import Counter from './Counters'
 import LoginForm from './LoginForm'
 import Analytics from './Analytics'
-import Settings from './Settings'
-import Database from './Database'
+import Database from './Database/Database'
 import PrivacyPolicy from './PrivacyPolicy'
 import TopNav from './TopNav'
 
-import firebase from 'firebase'
 import 'firebase/firestore'
 import 'firebase/auth'
 import UserContext, { UserConsumer } from '../contexts/UserContext'
+import UserInfoPage from '../common/UserInfoPage'
 
 
 class Dashboard extends Component {
@@ -236,7 +235,7 @@ class Dashboard extends Component {
                   path="/analytics"
                   render={props => <Analytics userinfo={this.state.user} />}
                 />
-                <Route path="/settings" component={Settings} />
+                <Route path="/userInfo" component={UserInfoPage} />
                 <Route path="/database" component={Database} />
                 <Route path="/privacyPolicy" component={PrivacyPolicy} />
                 <Route path="/login2" />

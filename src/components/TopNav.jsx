@@ -7,7 +7,6 @@ import firebase from 'firebase'
 import 'firebase/firestore'
 import UserContext, { UserConsumer } from '../contexts/UserContext'
 
-
 class TopNav extends Component {
   state = {
     dropdownToggled: false
@@ -23,10 +22,13 @@ class TopNav extends Component {
   render() {
     return (
       <UserConsumer>
-
-        {UserContext =>
+        {UserContext => (
           <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <NavLink style={{ paddingLeft: 0 }} className="nav-link" to="/movies">
+            <NavLink
+              style={{ paddingLeft: 0 }}
+              className="nav-link"
+              to="/movies"
+            >
               {' '}
               <h1 className="navbar-brand ps-3">React Examples</h1>
             </NavLink>
@@ -73,7 +75,10 @@ class TopNav extends Component {
                     this.state.dropdownToggled === true ? 'true' : 'false'
                   }
                 >
-                  <img style={{width:'40px'}} src={UserContext.user.photoURL} />
+                  <img
+                    style={{ width: '40px' }}
+                    src={UserContext.user.photoURL}
+                  />
                 </div>
                 <ul
                   className={
@@ -85,28 +90,33 @@ class TopNav extends Component {
                   style={{ right: 0, left: 'auto' }}
                 >
                   <li>
-                    <NavLink className=" dropdown-item" to="/settings">
+                    <NavLink className=" dropdown-item" to="/userInfo">
                       Settings
-             </NavLink>
+                    </NavLink>
                   </li>
                   <li>
                     <a className="dropdown-item" href="#!">
                       Activity Log
-             </a>
+                    </a>
                   </li>
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
                   <li>
-                    <a onClick={this.signOut} className="dropdown-item" href="#!">
+                    <a
+                      onClick={this.signOut}
+                      className="dropdown-item"
+                      href="#!"
+                    >
                       Logout
-             </a>
+                    </a>
                   </li>
                 </ul>
               </li>
             </ul>
           </nav>
-        }</UserConsumer>
+        )}
+      </UserConsumer>
     )
   }
 }
