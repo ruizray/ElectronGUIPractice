@@ -6,7 +6,8 @@ import 'react-calendar/dist/Calendar.css'
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
 import DataRequestForm from './DataRequestForm'
-
+import UserContext ,{UserConsumer} from './../contexts/UserContext';
+import GoogleAuth from './GoogleAuth'
 class Analytics extends Component {
   state = {
     data1: [],
@@ -20,6 +21,8 @@ class Analytics extends Component {
     pagecount: 0,
     errors: {}
   }
+
+
   formatDate(date) {
     var day = date.getDate()
     var month = date.getMonth() + 1
@@ -70,12 +73,8 @@ class Analytics extends Component {
   }
 
   queryReport = () => {
-  
-    window.gapi.analytics.auth.authorize({    
-      serverAuth: {       
-        access_token: this.props.authToken     
-      }  
-    });
+
+ 
     window.gapi.client
       .request({
         path: '/v4/reports:batchGet',
@@ -170,6 +169,9 @@ class Analytics extends Component {
   render() {
  
     return (
+      <UserConsumer>
+
+        {UserContext =>
       <main id="pdf">
         <div className="container-fluid px-4">
           <h1 className="mt-4">Google Analytics Data For VOB Website</h1>
@@ -204,6 +206,7 @@ class Analytics extends Component {
               />
             </div>
             <div className="col-md-9">
+            
               <DataRequestForm
                 onSubmit={this.handleSubmit}
                 onDownloadClick={this.handleDownload}
@@ -228,9 +231,11 @@ class Analytics extends Component {
             </div>
           </div>
         </div>
-      </main>
+      </main>}
+      </UserConsumer>
     )
   }
 }
 
+Analytics.contextType = UserContext
 export default Analytics

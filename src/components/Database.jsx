@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { db } from '../scripts/firebase'
+
 import _ from 'lodash'
 import { paginate } from './../scripts/paginate'
 import Pagination from './../common/Pagination'
@@ -8,6 +8,9 @@ import DatabaseTable from './DatabaseTable'
 import { faTable } from '@fortawesome/free-solid-svg-icons'
 import DatabaseAddForm from './DatabaseAddForm'
 import Card from '../common/Card'
+import UserContext, { UserConsumer } from './../contexts/UserContext';
+import firebase from 'firebase'
+import { getFirestore } from "firebase/firestore"
 class Database extends Component {
   state = {
     posts: [],
@@ -18,11 +21,15 @@ class Database extends Component {
     sortColumn: {
       path: 'model',
       order: 'asc'
-    }
+    },
+    
   }
-
+ 
   handleGetDatabase = () => {
     var categories = []
+    console.log(firebase.apps)
+    var firebaseApp = firebase.apps
+    const db =  firebaseApp[0].firestore()
     db.collection('inventory')
       .get()
       .then(querySnapshot => {
@@ -43,8 +50,10 @@ class Database extends Component {
   }
 
   handleDelete = post => {
+    var firebaseApp = firebase.apps
+    const db =  firebaseApp[0].firestore()
     const posts = this.state.posts.filter(
-      m =>( m.category !== post.category ) && (post.model !== m.model)
+      m => (m.category !== post.category) && (post.model !== m.model)
     )
     db.collection('inventory')
       .doc(post.category)
@@ -89,7 +98,8 @@ class Database extends Component {
   }
 
   handleSubmit = ({ category, count, cost, model }) => {
-
+    var firebaseApp = firebase.apps
+    const db =  firebaseApp[0].firestore()
 
     db.collection('inventory')
       .doc(category)
@@ -100,7 +110,7 @@ class Database extends Component {
         cost,
       })
       .then(function () {
-        console.log('Document successfully written!')
+        alert("Succesfully added, refresh page to see changes")
       })
       .catch(function (error) {
         console.error('Error writing document: ', error)
@@ -116,37 +126,44 @@ class Database extends Component {
 
 
     return (
-      <div class="container-fluid px-4">
-        <h1 class="mt-4">Inventory Database Example</h1>
-        <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item">
-            <NavLink style={{ padding: 0 }} className="nav-link" to="/movies">
-              Dashboard
-            </NavLink>
-          </li>
-          <li class="breadcrumb-item active">Inventory Database Application</li>
-        </ol>
-        <Card title="Add Data" icon={faTable} >
-          <DatabaseAddForm onSubmit={this.handleSubmit} />
-        </Card>
+      
+      <UserConsumer>
 
-        <Card title="Inventory database" icon={faTable}>
-          <div className="col-md-2">
-          <button className="btn btn-secondary" onClick={this.handleGetDatabase}>Get Database </button>
+        {UserContext =>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Inventory Database Example</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item">
+                <NavLink style={{ padding: 0 }} className="nav-link" to="/movies">
+                  Dashboard
+            </NavLink>
+              </li>
+              <li class="breadcrumb-item active">Inventory Database Application</li>
+            </ol>
+            <Card title="Add Data" icon={faTable} >
+              <DatabaseAddForm onSubmit={this.handleSubmit} />
+            </Card>
+
+            <Card title="Inventory database" icon={faTable}>
+              <div className="col-md-2">
+                <button className="btn btn-secondary" onClick={this.handleGetDatabase}>Get Database </button>
+              </div>
+              <p>Showing {totalCount} items in inventory</p>
+              <DatabaseTable posts={posts} sortColumn={sortColumn} onDelete={this.handleDelete} onSort={this.handleSort} />
+              <Pagination
+                itemsCount={totalCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={this.handlePageChange}
+              />
+            </Card>
           </div>
-          <p>Showing {totalCount} items in inventory</p>
-          <DatabaseTable posts={posts} sortColumn={sortColumn} onDelete={this.handleDelete} onSort={this.handleSort} />
-          <Pagination
-            itemsCount={totalCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            onPageChange={this.handlePageChange}
-          />
-        </Card>
-      </div>
+          }
+      </UserConsumer>
+
 
     )
   }
 }
-
+Database.contextType = UserContext
 export default Database

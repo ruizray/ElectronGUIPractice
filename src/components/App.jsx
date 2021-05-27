@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
-import Sidenav from './Sidenav'
-import { useHistory , Redirect} from "react-router-dom";
+import React, { useState, useContext } from 'react'
+import Dashboard from './Dashboard'
+import {  Redirect} from "react-router-dom";
 
 import {
   useAuthState,
   useSignInWithEmailAndPassword,
 } from 'react-firebase-hooks/auth'
 import firebase from 'firebase'
-import Login from './Login'
-
-
-firebase.initializeApp({
+import LoginForm from './LoginForm';
+import { UserProvider } from './../contexts/UserContext';
+import { getFirestore } from "firebase/firestore"
+import RegisterForm from './RegisterForm';
+const firebaseApp=firebase.initializeApp({
     apiKey: 'AIzaSyAU8YtFNTgL7v37WUW-ElF7VbAw0l-yOHo',
     authDomain: 'react-fc0a1.firebaseapp.com',
     projectId: 'react-fc0a1',
@@ -22,12 +23,14 @@ firebase.initializeApp({
 
 
 const App = () => {
-    const history = useHistory();
+
   const [toggled, handleNavtoggled] = React.useState(false)
   const handleNavToggle = () => {
     handleNavtoggled(!toggled)
   }
-
+  const db = firebaseApp.firestore()
+  const [token, setToken] = React.useState('')
+  const [register, setRegister] = React.useState(false)
   const[user, loading, error] = useAuthState(firebase.auth())
 
 
@@ -52,6 +55,7 @@ const App = () => {
   if (user) {
       
     return (
+      <UserProvider value={{ user : user ,token: token, db}} >
       <React.Fragment>
         <div
           className={
@@ -60,14 +64,20 @@ const App = () => {
               : 'sb-nav-fixed'
           }
         >
-          <Sidenav user={user} onToggle={handleNavToggle} />
+          <Dashboard  onToggle={handleNavToggle} />
           <Redirect to="/" />
         </div>
       </React.Fragment>
+      </UserProvider>
+    )
+  }
+  if(register){
+    return(
+      <RegisterForm />
     )
   }
   return (
-    <Login />
+    <LoginForm setToken={setToken} doRegister={setRegister}/>
   )
 
 

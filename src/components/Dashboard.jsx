@@ -15,32 +15,33 @@ import TopNav from './TopNav'
 import firebase from 'firebase'
 import 'firebase/firestore'
 import 'firebase/auth'
+import UserContext, { UserConsumer } from '../contexts/UserContext'
 
-class Sidenav extends Component {
+
+class Dashboard extends Component {
   state = {
     dropdownToggled: false,
-    user: this.props.user
+
   }
 
-  getUser = () => {
-    console.log(this.props.user)
-    return this.state.user.displayName
-  }
+
 
   render() {
     return (
-      <React.Fragment>
-        <TopNav onToggle={this.props.onToggle} />
-        <div id="layoutSidenav">
-          <div id="layoutSidenav_nav">
-            <nav
-              className="sb-sidenav accordion sb-sidenav-dark"
-              id="sidenavAccordion"
-            >
-              <div className="sb-sidenav-menu">
-                <div className="nav">
-                  <div className="sb-sidenav-menu-heading">Core</div>
-                  {/* <NavLink className="nav-link" to="/login">
+      <UserConsumer>
+        {UserContext =>
+          <React.Fragment>
+            <TopNav onToggle={this.props.onToggle} />
+            <div id="layoutSidenav">
+              <div id="layoutSidenav_nav">
+                <nav
+                  className="sb-sidenav accordion sb-sidenav-dark"
+                  id="sidenavAccordion"
+                >
+                  <div className="sb-sidenav-menu">
+                    <div className="nav">
+                      <div className="sb-sidenav-menu-heading">Core</div>
+                      {/* <NavLink className="nav-link" to="/login">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>
@@ -52,39 +53,39 @@ class Sidenav extends Component {
                     </div>
                     Login Form
                   </NavLink> */}
-                  <NavLink className="nav-link" to="/movies">
-                    <div className="sb-nav-link-icon">
-                      <FontAwesomeIcon icon={fa.faTachometerAlt} />
-                    </div>{' '}
+                      <NavLink className="nav-link" to="/movies">
+                        <div className="sb-nav-link-icon">
+                          <FontAwesomeIcon icon={fa.faTachometerAlt} />
+                        </div>{' '}
                     Movies Application
                   </NavLink>
-                  <NavLink className="nav-link" to="/database">
-                    <div className="sb-nav-link-icon">
-                      <FontAwesomeIcon icon={fa.faTachometerAlt} />
-                    </div>{' '}
+                      <NavLink className="nav-link" to="/database">
+                        <div className="sb-nav-link-icon">
+                          <FontAwesomeIcon icon={fa.faTachometerAlt} />
+                        </div>{' '}
                     DataBase Application
                   </NavLink>
 
-                  {/* <NavLink className="nav-link" to="/stuff">
+                      {/* <NavLink className="nav-link" to="/stuff">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>
                     Graphing from File
                   </NavLink> */}
-                  {/* <NavLink className="nav-link" to="/counter">
+                      {/* <NavLink className="nav-link" to="/counter">
                     <div className="sb-nav-link-icon">
                       <FontAwesomeIcon icon={fa.faTachometerAlt} />
                     </div>
                     Counter Example
                   </NavLink> */}
 
-                  <NavLink className="nav-link" to="/analytics">
-                    <div className="sb-nav-link-icon">
-                      <FontAwesomeIcon icon={fa.faTachometerAlt} />
-                    </div>
+                      <NavLink className="nav-link" to="/analytics">
+                        <div className="sb-nav-link-icon">
+                          <FontAwesomeIcon icon={fa.faTachometerAlt} />
+                        </div>
                     Google Analytics
                   </NavLink>
-                  {/* <div className="sb-sidenav-menu-heading">Interface</div>
+                      {/* <div className="sb-sidenav-menu-heading">Interface</div>
                   <a
                     className="nav-link collapsed"
                     href="#"
@@ -219,48 +220,52 @@ class Sidenav extends Component {
                     </div>
                     Tables
                   </a> */}
-                </div>
-              </div>
-              <div className="sb-sidenav-footer">{this.getUser()}</div>
-            </nav>
-          </div>
-          <div id="layoutSidenav_content">
-            <Route exact path="/!" component={Analytics} />
-            <Route exact path="/" component={Analytics} />
-            <Route exact path="/movies" component={Movies} />
-            <Route path="/stuff" component={Stuff} />
-            <Route path="/counter" component={Counter} />
-            <Route path="/login" component={LoginForm} />
-            <Route
-              path="/analytics"
-              render={props => <Analytics userinfo={this.state.user} />}
-            />
-            <Route path="/settings" component={Settings} />
-            <Route path="/database" component={Database} />
-            <Route path="/privacyPolicy" component={PrivacyPolicy} />
-            <Route path="/login2" />
-
-            <footer className="py-4 bg-light mt-auto">
-              <div className="container-fluid px-4">
-                <div className="d-flex align-items-center justify-content-between small">
-                  <div className="text-muted">
-                    Copyright &copy; Raymundo Ruiz
+                    </div>
                   </div>
-                  <div>
-                    <NavLink classname="nav-link" to="/privacyPolicy">
-                      Privacy Policy
+                  <div className="sb-sidenav-footer"> {'Logged in as \n' + UserContext.user.displayName}</div>
+                </nav>
+              </div>
+              <div id="layoutSidenav_content">
+                <Route exact path="/!" component={Analytics} />
+                <Route exact path="/" component={Analytics} />
+                <Route exact path="/movies" component={Movies} />
+                <Route path="/stuff" component={Stuff} />
+                <Route path="/counter" component={Counter} />
+                <Route path="/login" component={LoginForm} />
+                <Route
+                  path="/analytics"
+                  render={props => <Analytics userinfo={this.state.user} />}
+                />
+                <Route path="/settings" component={Settings} />
+                <Route path="/database" component={Database} />
+                <Route path="/privacyPolicy" component={PrivacyPolicy} />
+                <Route path="/login2" />
+
+                <footer className="py-4 bg-light mt-auto">
+                  <div className="container-fluid px-4">
+                    <div className="d-flex align-items-center justify-content-between small">
+                      <div className="text-muted">
+                        Copyright &copy; Raymundo Ruiz
+                  </div>
+                      <div>
+                        <NavLink classname="nav-link" to="/privacyPolicy">
+                          Privacy Policy
                     </NavLink>
                     &middot;
                     <a href="#">Terms &amp; Conditions</a>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </footer>
               </div>
-            </footer>
-          </div>
-        </div>
-      </React.Fragment>
+            </div>
+          </React.Fragment>
+        }
+      </UserConsumer>
     )
   }
 }
 
-export default Sidenav
+
+Dashboard.contextType = UserContext
+export default Dashboard

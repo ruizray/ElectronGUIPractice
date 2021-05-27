@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
 import firebase from 'firebase'
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faGoogle} from '@fortawesome/free-brands-svg-icons' 
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 class LoginForm extends Form {
   state = {
     data: { username: '', password: '' },
@@ -13,43 +13,65 @@ class LoginForm extends Form {
 
   schema = {
     username: Joi.string().required().label('Username'),
-    password: Joi.string().required().label('Password')
+    password: Joi.string().min(6).required().label('Password')
   }
 
   doSubmit = () => {
     console.log('Submitted')
-    firebase.auth().signInWithEmailAndPassword(this.state.data.username, this.state.data.password);
+    firebase.auth().signInWithEmailAndPassword(this.state.data.username, this.state.data.password).catch((error) => {
+      alert(error.message)
+    });
+  ;
+  }
+
+  doRegister =() =>{
+    this.props.doRegister(true);
+  }
+  signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    provider.addScope('https://www.googleapis.com/auth/analytics.readonly')
+    firebase.auth()
+      .signInWithPopup(provider)
+      .then(result => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential
+        var token = credential.accessToken
+        this.props.setToken(token)
+        var user = result.user
+
+        console.log(token)
+      })
+      .catch(error => {
+        alert(error)
+      })
   }
 
   render() {
-    const { data, errors } = this.state
 
+   const {doRegister} = this.props
     return (
       <React.Fragment>
-        <div class="container-fluid px-4">
-          <h1 class="mt-4">Login Form</h1>
-          <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item">
-              <a href="index.html">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active">Login Form</li>
-          </ol>
 
-          <div class="card mb-4">
-            <div class="card-header">
-              <i class="fas fa-table me-1"></i>
-              DataTable Example
-            </div>
-            <div className="row mx-4 my-4">
-              <h1>Login</h1>
-              <form onSubmit={this.handleSubmit}>
-                {this.renderInput('username', 'Username')}
-                {this.renderInput('password', 'Password', 'password')}
+
+        <div class="container h-100">
+          <div class="row h-100 justify-content-center align-items-center">
+
+            <form className="col-12" onSubmit={this.handleSubmit}>
+              <h2>Login</h2>
+              {this.renderInput('username', 'Username')}
+              {this.renderInput('password', 'Password', 'password')}
+              <div className="btn-group">
                 {this.renderButton('Login')}
-            
-              </form>
-             
-            </div>
+                {this.renderRegisterButton('Register' , "button", doRegister)}
+              </div>
+
+              <div className="row mt-4 justify-content-center">
+                <div className="col-md-2 height:100px align-middle">
+                  <button type="button" style={{ width: '100%' }} className="btn btn-primary align-items-center align-middle justify-content-center" onClick={this.signInWithGoogle}> <FontAwesomeIcon icon={faGoogle} color="white" size='2x' /></button>
+                </div>
+              </div>
+
+            </form>
           </div>
         </div>
       </React.Fragment>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import  Joi from 'joi-browser';
 import Input from './Input'
+import { Redirect } from 'react-router';
 class Form extends Component {
     state = {
         data: {},
@@ -8,7 +9,7 @@ class Form extends Component {
     }
 
     validate = () => {
-        const options = { abortEarly: false };
+        const options = { abortEarly: false, allowUnknown:true };
         const { error } = Joi.validate(this.state.data, this.schema, options)
         if (!error) return null;
         const errors = {}
@@ -50,6 +51,9 @@ class Form extends Component {
 
     renderButton(label, ref){
         return <button ref={ref} disabled={this.validate()} className="btn btn-primary mt-2">{label}</button>
+    }
+    renderRegisterButton(label, type, doRegister){
+        return <button type={type} onClick={doRegister} className="btn btn-primary mt-2">{label}</button>
     }
 
     renderDownloadButton(label, type="button", ref){
