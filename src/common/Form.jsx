@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import  Joi from 'joi-browser';
 import Input from './Input'
-import { Redirect } from 'react-router';
 class Form extends Component {
     state = {
         data: {},

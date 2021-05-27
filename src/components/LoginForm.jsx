@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
 import firebase from 'firebase'
@@ -37,9 +37,6 @@ class LoginForm extends Form {
         var credential = result.credential
         var token = credential.accessToken
         this.props.setToken(token)
-        var user = result.user
-
-        console.log(token)
       })
       .catch(error => {
         alert(error)

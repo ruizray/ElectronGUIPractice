@@ -78,6 +78,7 @@ class TopNav extends Component {
                   <img
                     style={{ width: '40px' }}
                     src={UserContext.user.photoURL}
+                    alt = "User Profile"
                   />
                 </div>
                 <ul

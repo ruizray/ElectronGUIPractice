@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Joi from 'joi-browser'
 import Form from '../common/Form'
 import firebase from 'firebase'
@@ -43,7 +43,6 @@ class RegisterForm extends Form {
 
         return (
             <React.Fragment>
-
 
                 <div class="container h-100">
                     <div class="row h-100 justify-content-center align-items-center">

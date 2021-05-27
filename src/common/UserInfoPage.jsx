@@ -21,7 +21,7 @@ const UserInfoPage = () => {
                     width="150"
                   />
                   <div className="mt-3">
-                    <h4>{user.user.displayName}</h4>
+                    <h4>{user.user.displayName || '-'}</h4>
                     <p className="text-secondary mb-1">Position PlaceHolder</p>
                     <p className="text-muted font-size-sm">
                      Location Placeholder

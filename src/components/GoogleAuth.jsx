@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-import { provider } from './../scripts/firebase';
 class GoogleAuth extends Component {
   state = {
     isSignedIn: false,

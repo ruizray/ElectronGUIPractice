@@ -22,6 +22,9 @@ class Analytics extends Component {
     errors: {}
   }
 
+  componentDidMount(){
+    
+  }
 
   formatDate(date) {
     var day = date.getDate()
