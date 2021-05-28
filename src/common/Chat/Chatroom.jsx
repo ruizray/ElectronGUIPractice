@@ -13,9 +13,10 @@ const ChatRoom = () => {
   const query = messagesRef.orderBy('createdAt').limit(25)
   const [messages] = useCollectionData(query, { idField: 'id' })
   const [formValue, setFormValue] = useState('')
+  const { uid, photoURL } = auth.currentUser
   const sendMessage = async e => {
     e.preventDefault()
-    const { uid, photoURL } = auth.currentUser
+    
     await messagesRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -30,7 +31,12 @@ const ChatRoom = () => {
       <div className="container">
         <main>
           {messages &&
-            messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+            messages.map(msg =>{
+                if((msg.photoURL !== photoURL) && (msg.uid === uid) ){
+                    msg.photoURL = photoURL;
+                }
+               return <ChatMessage key={msg.id} message={msg} /> 
+            } )}
           <span ref={dummy}></span>
         </main>
 

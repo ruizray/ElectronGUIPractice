@@ -85,7 +85,8 @@ class Dashboard extends Component {
                         </div>
                         Google Analytics
                       </NavLink>
-                      {/* <div className="sb-sidenav-menu-heading">Interface</div>
+                      {
+                      /* <div className="sb-sidenav-menu-heading">Interface</div>
                   <a
                     className="nav-link collapsed"
                     href="#"
