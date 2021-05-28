@@ -6,7 +6,8 @@ import {
   linkTwitter,
   getProviderData,
   getProviderPhoto,
-  linkGoogle
+  linkGoogle,
+  doesUserExist
 } from '../scripts/firebase'
 
 const changeProfilePicture = provider => {
@@ -14,10 +15,12 @@ const changeProfilePicture = provider => {
 }
 const UserInfoPage = () => {
   const user = useContext(UserContext)
+
   const buttons = {
     'google.com': linkGoogle,
     'twitter.com': linkTwitter
   }
+
   const doesAccountExist = provider => {
     const data = getProviderData(provider)
     if (data !== -1) {
@@ -49,13 +52,11 @@ const UserInfoPage = () => {
     }
   }
 
-  console.log(user)
   return (
     <div className="mx-4 my-4">
       <div className="main-body">
         <div className="row gutters-sm">
           <div className="col-md-4 mb-3">
-
             <div className="card">
               <div className="card-body">
                 <div className="d-flex flex-column align-items-center text-center">
@@ -94,7 +95,14 @@ const UserInfoPage = () => {
                   <h6 className="mb-0">
                     <FontAwesomeIcon icon={fa.faGithub} /> Github
                   </h6>
-                  <span className="text-secondary">bootdey</span>
+                  <span className="text-secondary">
+                    <button
+                      onClick={doesUserExist(user.user.uid , "github" , {username: "ruizray"})}
+                      className="btn btn-secondary"
+                    >
+                      Link
+                    </button>
+                  </span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <h6 className="mb-0">
@@ -118,7 +126,6 @@ const UserInfoPage = () => {
                 </li>
               </ul>
             </div>
-          
           </div>
           <div className="col-md-8">
             <div className="card mb-3">
@@ -246,7 +253,6 @@ const UserInfoPage = () => {
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>

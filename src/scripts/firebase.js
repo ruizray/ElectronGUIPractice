@@ -69,15 +69,28 @@ export function getProviderData(provider) {
     return user.providerData[index]
 }
 
-firebase.firestore().enablePersistence()
-  .catch((err) => {
-      if (err.code === 'failed-precondition') {
-            console.log(err.code)
-      } else if (err.code === 'unimplemented') {
-          console.log(err.code)
-          // The current browser does not support all of the
-          // features required to enable persistence
-          // ...
-      }
-  });
-// Subsequent queries will use persistence, if it was enabled successfully
+export function enablePersistence() {
+    firebase.firestore().enablePersistence()
+        .catch((err) => {
+            if (err.code === 'failed-precondition') {
+                console.log(err.code)
+            } else if (err.code === 'unimplemented') {
+                console.log(err.code)
+                // The current browser does not support all of the
+                // features required to enable persistence
+                // ...
+            }
+        });
+}
+
+export function doesUserExist(userID, key, value) {
+    var userDBRef = firestore.collection("users").doc(userID);
+    var item = new Map()
+    item.set(key, value)
+    userDBRef.set({
+        item
+    }, { merge: true }).then(
+
+    )
+
+}
