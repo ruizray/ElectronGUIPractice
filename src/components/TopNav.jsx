@@ -92,7 +92,7 @@ class TopNav extends Component {
                 >
                   <li>
                     <NavLink className=" dropdown-item" to="/userInfo">
-                      Settings
+                      Profile
                     </NavLink>
                   </li>
                   <li>

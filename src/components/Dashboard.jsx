@@ -252,7 +252,7 @@ class Dashboard extends Component {
                         Copyright &copy; Raymundo Ruiz
                       </div>
                       <div>
-                        <NavLink classname="nav-link" to="/privacyPolicy">
+                        <NavLink className="nav-link" to="/privacyPolicy">
                           Privacy Policy
                         </NavLink>
                         &middot;
