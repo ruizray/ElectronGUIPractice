@@ -59,9 +59,9 @@ class Form extends Component {
         return <button type={type} disabled={this.validate()} onClick={this.handleDownload} className="btn btn-primary mt-2">{label}</button>
     }
 
-    renderInput(name, label, type, ref){
+    renderInput(name, label, type, required ){
         const {data, errors} = this.state;
-        return <Input ref={ref} name={name} label={label} type={type} value={data[name]}  onChange={this.handleChange} error={errors[name]} />
+        return (<><Input  name={name} label={label} type={type} value={data[name]}  onChange={this.handleChange} error={errors[name]} required={required} />  </>)
     }
 }
 

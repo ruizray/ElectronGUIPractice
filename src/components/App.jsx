@@ -40,16 +40,10 @@ const App = () => {
     return (
       <UserProvider value={{ user: user, token: token, }}>
         <React.Fragment>
-          <div
-            className={
-              toggled === true
-                ? 'sb-nav-fixed sb-sidenav-toggled'
-                : 'sb-nav-fixed'
-            }
-          >
+          
             <Dashboard onToggle={handleNavToggle} />
             <Redirect to="/" />
-          </div>
+       
         </React.Fragment>
       </UserProvider>
     )

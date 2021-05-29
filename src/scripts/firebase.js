@@ -83,14 +83,3 @@ export function enablePersistence() {
         });
 }
 
-export function doesUserExist(userID, key, value) {
-    var userDBRef = firestore.collection("users").doc(userID);
-    var item = new Map()
-    item.set(key, value)
-    userDBRef.set({
-        item
-    }, { merge: true }).then(
-
-    )
-
-}

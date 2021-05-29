@@ -9,7 +9,8 @@ import {
   linkGoogle,
   doesUserExist
 } from '../scripts/firebase'
-
+import Form from '../common/Form'
+import Button from '@material-ui/core/Button';
 const changeProfilePicture = provider => {
   getProviderPhoto(getProviderData(provider))
 }
@@ -53,7 +54,105 @@ const UserInfoPage = () => {
   }
 
   return (
-    <div className="mx-4 my-4">
+    <div class="container-xl p-5">
+                  
+                        <mwc-tab-bar style={{marginbottom: "-1px"}} activeindex="2">
+                            <mwc-tab label="Billing" icon="account_balance" stacked="" onclick="location.href=&quot;app-account-billing.html&quot;" dir="" id="mdc-tab-1"></mwc-tab>
+                            <mwc-tab label="Notifications" icon="notifications" stacked="" onclick="location.href=&quot;app-account-notifications.html&quot;" dir="" id="mdc-tab-2"></mwc-tab>
+                            <mwc-tab label="Profile" icon="person" stacked="" onclick="location.href=&quot;app-account-profile.html&quot;" dir="" id="mdc-tab-3" active=""></mwc-tab>
+                            <mwc-tab label="Security" icon="security" stacked="" onclick="location.href=&quot;app-account-security.html&quot;" dir="" id="mdc-tab-4"></mwc-tab>
+                        </mwc-tab-bar>
+                   
+                        <hr class="mt-0 mb-5"/>
+                    
+                        <div class="row gx-5">
+                            <div class="col-xl-4">
+                           
+                                <div class="card card-raised mb-5">
+                                    <div class="card-body p-5">
+                                        <div class="card-title">Profile Image</div>
+                                        <div class="card-subtitle mb-4">This image will be publicly visible to other users.</div>
+                                        <div class="text-center">
+                                      
+                                        <img
+                    src={user.user.photoURL}
+                    alt="Admin"
+                    className="rounded-circle"
+                    width="150"
+                  />
+                                        
+                                            <div class="caption fst-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                                       
+                                            <button class="btn btn-primary mdc-ripple-upgraded" type="button">
+                                                Upload new image
+                                                <i class="material-icons trailing-icon">upload</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8">
+                             
+                                <div class="card card-raised mb-5">
+                                    <div class="card-body p-5">
+                                        <div class="card-title">Account Details</div>
+                                        <div class="card-subtitle mb-4">Review and update your account information below.</div>
+                                        <form>
+                                           
+                                            <div class="mb-4"><mwc-textfield class="w-100" label="Username" outlined="" value="my-username"></mwc-textfield></div>
+                                       
+                                            <div class="row mb-4">
+                                             
+                                                <div class="col-md-6"><mwc-textfield class="w-100" label="First Name" outlined="" value="Valerie"></mwc-textfield></div>
+                                             
+                                                <div class="col-md-6"><mwc-textfield class="w-100" label="Last Name" outlined="" value="Luna"></mwc-textfield></div>
+                                            </div>
+                                          
+                                            <div class="row mb-4">
+                                            
+                                                <div class="col-md-6"><mwc-textfield class="w-100" label="Organization Name" outlined="" value="Start Bootstrap"></mwc-textfield></div>
+                                           
+                                                <div class="col-md-6"><mwc-textfield class="w-100" label="Location" outlined="" value="Orlando, FL"></mwc-textfield></div>
+                                            </div>
+                              
+                                            <div class="mb-4"><mwc-textfield class="w-100" label="Location" outlined="" type="email" value="name@example.com"></mwc-textfield></div>
+                                           
+                                            <div class="row mb-4">
+                                              
+                                                <div class="col-md-6"><mwc-textfield class="w-100" label="SMS Number" outlined="" type="tel" value="407-555-0187"></mwc-textfield></div>
+                                      
+                                                <div class="col-md-6">
+                                                    <mwc-select class="w-100" outlined="" label="Birth Month">
+                                                        <mwc-list-item value="January" selected="" mwc-list-item="" tabindex="0" aria-disabled="false" role="option" aria-selected="true">January</mwc-list-item>
+                                                        <mwc-list-item value="February" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">February</mwc-list-item>
+                                                        <mwc-list-item value="March" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">March</mwc-list-item>
+                                                        <mwc-list-item value="April" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">April</mwc-list-item>
+                                                        <mwc-list-item value="May" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">May</mwc-list-item>
+                                                        <mwc-list-item value="June" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">June</mwc-list-item>
+                                                        <mwc-list-item value="July" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">July</mwc-list-item>
+                                                        <mwc-list-item value="August" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">August</mwc-list-item>
+                                                        <mwc-list-item value="September" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">September</mwc-list-item>
+                                                        <mwc-list-item value="October" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">October</mwc-list-item>
+                                                        <mwc-list-item value="November" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">November</mwc-list-item>
+                                                        <mwc-list-item value="December" mwc-list-item="" tabindex="-1" aria-disabled="false" role="option">December</mwc-list-item>
+                                                    </mwc-select>
+                                                </div>
+                                            </div>
+                              
+                                            <div class="text-end"><button class="btn btn-primary mdc-ripple-upgraded" type="button">Save changes</button></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+  )
+}
+
+export default UserInfoPage
+{
+  /*
+<div className="mx-4 my-4">
       <div className="main-body">
         <div className="row gutters-sm">
           <div className="col-md-4 mb-3">
@@ -97,7 +196,7 @@ const UserInfoPage = () => {
                   </h6>
                   <span className="text-secondary">
                     <button
-                      onClick={doesUserExist(user.user.uid , "github" , {username: "ruizray"})}
+                   
                       className="btn btn-secondary"
                     >
                       Link
@@ -257,8 +356,5 @@ const UserInfoPage = () => {
           </div>
         </div>
       </div>
-    </div>
-  )
+    </div> */
 }
-
-export default UserInfoPage
