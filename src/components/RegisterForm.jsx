@@ -1,173 +1,207 @@
-import React from 'react'
-import Joi from 'joi-browser'
-import Form from '../common/Form'
-import firebase from 'firebase'
+import React, { useState } from "react";
+import Joi from "joi-browser";
+import Form from "../common/Form";
+import firebase from "firebase";
+import InputFrom from "../common/Input";
+import { signUpWithEmailPassword } from "./../scripts/firebase";
 
-class RegisterForm extends Form {
-  state = {
-    data: {
-      firstName: '',
-      lastName: '',
-      password: '',
-      displayName: '',
-      verifyPassword: ''
-    },
-    errors: {}
-  }
+const RegisterForm = (props) => {
+	const [data, setData] = useState({ firstName: "", lastName: "", password: "", username: "", email:"", verifyPassword: "" });
+	const [formErrors, setFormErrors] = useState({});
 
-  schema = {
-    email: Joi.string().required().label('Email'),
-    password: Joi.string().required().label('Password'),
-    firstName: Joi.string().min(2).required().label('First Name'),
-    lastName: Joi.string().min(2).required().label('Last Name'),
-    verifyPassword: Joi.any()
-      .valid(Joi.ref('password'))
-      .required()
-      .options({ language: { any: { allowOnly: 'must match password' } } })
-  }
+	const schema = {
+		email: Joi.string().required().label("Email"),
+		username: Joi.string().min(5).max(15).required().label("Username"),
+		password: Joi.string().required().label("Password"),
+		firstName: Joi.string().min(2).required().label("First Name"),
+		lastName: Joi.string().min(2).required().label("Last Name"),
+		verifyPassword: Joi.any()
+			.valid(Joi.ref("password"))
+			.required()
+			.options({ language: { any: { allowOnly: "must match password" } } }),
+	};
+	const validate = () => {
+		const options = { abortEarly: false, allowUnknown: true };
+		const { error } = Joi.validate(data, schema, options);
+		if (!error) return null;
+		const errors = {};
+		for (let item of error.details) errors[item.path[0]] = item.message;
 
-  doSubmit = () => {
-    console.log('Submitted')
+		console.log(errors);
+		return errors;
+	};
+	const validateProperty = ({ name, value }) => {
+		const obj = { [name]: value };
+		const tempschema = { [name]: schema[name] };
+		const { error } = Joi.validate(obj, tempschema);
+		return error ? error.details[0].message : null;
+	};
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(
-        this.state.data.email,
-        this.state.data.password
-      )
-      .then(userCredential => {
-        const user = userCredential.user
-        user.updateProfile({
-          displayName: this.state.data.firstName + this.state.data.lastName,
-          photoURL:
-            'https://pyxis.nymag.com/v1/imgs/3f0/aa0/221d958335e2f9fd068c976dba7d1280a0-03-alex-jones-supplements.rsquare.w700.jpg'
-        })
-      })
-      .catch(error => {
-        alert(error.message)
-      })
-  }
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(e);
+		const errors = validate();
+		console.log(errors);
+		console.log(formErrors);
+		setFormErrors(errors || {});
 
-  doRegister = () => {
-    this.props.doRegister(true)
-  }
+		if (errors) return;
+		console.log("Here");
 
-  render() {
-    return (
-      <React.Fragment>
-        <div className="bg-primary">
-          <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-              <main>
-                <div class="container">
-                  <div class="row justify-content-center">
-                    <div class="col-xxl-7 col-xl-10">
-                      <div class="card card-raised shadow-10 mt-5 mt-xl-10 mb-5">
-                        <div class="card-body p-5">
-                          <div class="text-center">
-                            <h1 class="display-5 mb-0">Create New Account</h1>
-                            <div class="subheading-1 mb-5">
-                              to continue to app
-                            </div>
-                          </div>
+	signUpWithEmailPassword(data)
+	};
 
-                          <form>
-                            <div class="row">
-                              <div class="col-sm-6 mb-4">
-                                {this.renderInput(
-                                  'firstName',
-                                  'First Name',
-                                  'text',
-                                  <span style={{ color: 'red' }}>*</span>
-                                )}
-                              </div>
-                              <div class="col-sm-6 mb-4">
-                                {this.renderInput(
-                                  'lastName',
-                                  'Last Name',
-                                  'text',
-                                  <span style={{ color: 'red' }}>*</span>
-                                )}
-                              </div>
-                            </div>
-                            <div class="mb-4">
-                              {this.renderInput(
-                                'email',
-                                'Email',
-                                'text',
-                                <span style={{ color: 'red' }}>*</span>
-                              )}
-                            </div>
-                            <div class="row">
-                              <div class="col-sm-6 mb-4">
-                                {this.renderInput(
-                                  'password',
-                                  'Password',
-                                  'password',
-                                  <span style={{ color: 'red' }}>*</span>
-                                )}
-                              </div>
-                              <div class="col-sm-6 mb-4">
-                                {this.renderInput(
-                                  'verifyPassword',
-                                  'Verify Password*',
-                                  'password',
-                                  <span style={{ color: 'red' }}>*</span>
-                                )}
-                              </div>
-                            </div>
+	const handleChange = ({ currentTarget: input }) => {
+		const errors = { ...formErrors };
+		const errorMessage = validateProperty(input);
+		if (errorMessage) {
+			errors[input.name] = errorMessage;
+		} else {
+			delete errors[input.name];
+		}
 
-                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                              <a
-                                class="small fw-500 text-decoration-none"
-                                href="app-auth-login-basic.html"
-                              >
-                                Sign in instead
-                              </a>
-                              {this.renderButton('Sign Up')}
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </main>
-            </div>
+		const tempdata = { ...data };
+		tempdata[input.name] = input.value;
+		setData(tempdata);
+		setFormErrors(errors);
+	};
+	
 
-            <div id="layoutAuthentication_footer">
-              <footer class="p-4">
-                <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between small">
-                  <div class="me-sm-3 mb-2 mb-sm-0">
-                    <div class="fw-500 text-white">
-                      Copyright &copy; Your Website 2021
-                    </div>
-                  </div>
-                  <div class="ms-sm-3">
-                    <a class="fw-500 text-decoration-none link-white" href="#!">
-                      Privacy
-                    </a>
-                    <a
-                      class="fw-500 text-decoration-none link-white mx-4"
-                      href="#!"
-                    >
-                      Terms
-                    </a>
-                    <a class="fw-500 text-decoration-none link-white" href="#!">
-                      Help
-                    </a>
-                  </div>
-                </div>
-              </footer>
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
-    )
-  }
-}
+	return (
+		<React.Fragment>
+			<div className='bg-primary'>
+				<div id='layoutAuthentication'>
+					<div id='layoutAuthentication_content'>
+						<main>
+							<div className='container'>
+								<div className='row justify-content-center'>
+									<div className='col-xxl-7 col-xl-10'>
+										<div className='card card-raised shadow-10 mt-5 mt-xl-10 mb-5'>
+											<div className='card-body p-5'>
+												<div className='text-center'>
+													<h1 className='display-5 mb-0'>Create New Account</h1>
+													<div className='subheading-1 mb-5'>to continue to app</div>
+												</div>
 
-export default RegisterForm
+												<form onSubmit={(e) => handleSubmit(e)}>
+													<div className='row'>
+														<div className='col-sm-6 mb-4'>
+															<InputFrom
+																required
+																name={"firstName"}
+																label={"First Name"}
+																type={"text"}
+																variant={"filled"}
+																onChange={handleChange}
+																error={formErrors["firstName"]}
+															/>
+														</div>
+														<div className='col-sm-6 mb-4'>
+															<InputFrom
+																required
+																name={"lastName"}
+																label={"Last Name"}
+																type={"text"}
+																variant={"filled"}
+																onChange={handleChange}
+																error={formErrors["lastName"]}
+															/>
+														</div>
+													</div>
+													<div className='mb-4'>
+														<InputFrom
+															required
+															name={"username"}
+															label={"Username"}
+															type={"text"}
+															variant={"filled"}
+															onChange={handleChange}
+															error={formErrors["username"]}
+														/>
+													</div>
+													<div className='mb-4'>
+														<InputFrom
+															required
+															name={"email"}
+															label={"Email"}
+															type={"text"}
+															variant={"filled"}
+															onChange={handleChange}
+															error={formErrors["email"]}
+														/>
+													</div>
+													<div className='row'>
+														<div className='col-sm-6 mb-4'>
+															<InputFrom
+																required
+																name={"password"}
+																label={"Password"}
+																type={"password"}
+																variant={"filled"}
+																onChange={handleChange}
+																error={formErrors["password"]}
+															/>
+														</div>
+														<div className='col-sm-6 mb-4'>
+															<InputFrom
+																required
+																name={"verifyPassword"}
+																label={"Verify Password"}
+																type={"password"}
+																variant={"filled"}
+																onChange={handleChange}
+																error={formErrors["verifyPassword"]}
+															/>
+														</div>
+													</div>
+
+													<div className='form-group d-flex align-items-center justify-content-between mt-4 mb-0'>
+														<a className='small fw-500 text-decoration-none' href='app-auth-login-basic.html'>
+															Sign in instead
+														</a>
+														<button
+															disabled={validate()}
+															type='submit'
+															className='btn btn-primary mdc-ripple-upgraded'>
+															Sign Up
+														</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</main>
+					</div>
+
+					<div id='layoutAuthentication_footer'>
+						<footer className='p-4'>
+							<div className='d-flex flex-column flex-sm-row align-items-center justify-content-between small'>
+								<div className='me-sm-3 mb-2 mb-sm-0'>
+									<div className='fw-500 text-white'>Copyright &copy; Your Website 2021</div>
+								</div>
+								<div className='ms-sm-3'>
+									<a className='fw-500 text-decoration-none link-white' href='#!'>
+										Privacy
+									</a>
+									<a className='fw-500 text-decoration-none link-white mx-4' href='#!'>
+										Terms
+									</a>
+									<a className='fw-500 text-decoration-none link-white' href='#!'>
+										Help
+									</a>
+								</div>
+							</div>
+						</footer>
+					</div>
+				</div>
+			</div>
+		</React.Fragment>
+	);
+};
+
+export default RegisterForm;
 // <React.Fragment>
 // <div class="container h-100">
 //   <div class="row h-100 justify-content-center align-items-center">

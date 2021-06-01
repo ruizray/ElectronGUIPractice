@@ -3,9 +3,9 @@ import Dashboard from './Dashboard'
 import { Redirect } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import firebase from 'firebase'
-import LoginForm from './LoginForm'
 import { UserProvider } from './../contexts/UserContext'
 import RegisterForm from './RegisterForm'
+import Login from './Login'
 
 
 
@@ -51,7 +51,7 @@ const App = () => {
   if (register) {
     return <RegisterForm />
   }
-  return <LoginForm setToken={setToken} doRegister={setRegister} />
+  return <Login setToken={setToken} doRegister={setRegister} />
 }
 
 export default App

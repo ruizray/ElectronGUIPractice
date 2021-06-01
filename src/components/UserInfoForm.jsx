@@ -1,187 +1,149 @@
-import React, { useContext, useState, useEffect } from "react";
-import * as fa from "@fortawesome/free-brands-svg-icons";
-import UserContext from "../contexts/UserContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { linkTwitter,  getProviderPhoto, linkGoogle, linkGithub, unlinkProvider } from "../scripts/firebase";
-import UserInfoForm from "../components/UserInfoForm";
-import firebase from "firebase";
-import "firebase/firestore";
-import { auth } from "./../scripts/firebase";
-import { List, ListItem, ListItemSecondaryAction, ListItemText, Tooltip } from "@material-ui/core";
-
-import IconButton from "@material-ui/core/IconButton";
-
-import PhotoIcon from "@material-ui/icons/Photo";
-
-import LinkOffIcon from "@material-ui/icons/LinkOff";
-import DeleteIcon from "@material-ui/icons/Delete";
+import React from "react";
+import Joi from "joi-browser";
 
 
-const UserInfoPage = () => {
-	const user = useContext(UserContext);
-	const [userData, setUserData] = useState({});
-  const [socialsData, setSocialsData]= useState({});
-	useEffect(() => {
-		let ignore = false;
-		const getdata = async () => {
-			if (auth.currentUser == null) {
-				return;
-			}
+import "@material/mwc-textfield";
 
-			const uid = auth.currentUser.uid;
-			var results = await firebase.firestore().collection("users").doc(uid).get();
-			if (!results) {
-				firebase.firestore().collection("users").doc(uid).set({
-					userName: "",
-				});
-			}
-			console.log(results);
-			const data = results.data();
-			console.log(data);
-			const obj = {
-				username: data.userName,
-				email: data.email || "",
-				firstname: data.firstName,
-				lastname: data.lastName,
-			};
-			if (!ignore){
-        setUserData(obj);
-        setSocialsData(data.socials)
-      } 
-		};
+import { useState, useEffect } from "react";
+import InputFrom from "../common/Input";
+import { updateUserData, auth } from "./../scripts/firebase";
 
-		getdata();
-		return () => {
-			ignore = true;
-		};
-	},[]);
-	const buttons = {
-		"google.com": linkGoogle,
-		"twitter.com": linkTwitter,
-		"github.com": linkGithub,
+const UserInfoForm = props => {
+	const schema = {
+		username: Joi.string().min(4).required().label("Username"),
+		firstname: Joi.string().min(3).required().label("First Name"),
+		lastname: Joi.string().min(2).required().label("Last Name"),
+		email: Joi.string().required().label("Email"),
 	};
 
-	const doesAccountExist = (provider) => {
-const info = socialsData[provider]
+	const [data, setData] = useState(props.userData);
+	const [formErrors, setFormErrors] = useState({});
 
-		if (info) {console.log(info.profilePhoto)
-			return (
-				<>
-					<ListItemText primary={info.username} secondary='Linked' />
-					<ListItemSecondaryAction>
-						<Tooltip title='Unlink' aria-label='Unlink'>
-							<IconButton onClick={() => unlinkProvider(provider)} edge='end' aria-label='delete'>
-								<DeleteIcon />
-							</IconButton>
-						</Tooltip>
-						<Tooltip title='Use Profile Picture' aria-label='Use Profile Picture'>
-							<IconButton onClick={() => getProviderPhoto( info.profilePhoto) } edge='end' aria-label='delete'>
-								<PhotoIcon />
-							</IconButton>
-						</Tooltip>
-					</ListItemSecondaryAction>{" "}
-				</>
-			);
+	useEffect(() => {
+    console.log("Getting")
+		setData(props.userData)
+	});
+
+	const validate = () => {
+		const options = { abortEarly: false, allowUnknown: true };
+		const { error } = Joi.validate(data, schema, options);
+		if (!error) return null;
+		const errors = {};
+		for (let item of error.details) errors[item.path[0]] = item.message;
+
+		console.log(errors);
+		return errors;
+	};
+	const validateProperty = ({ name, value }) => {
+		const obj = { [name]: value };
+		const tempschema = { [name]: schema[name] };
+		const { error } = Joi.validate(obj, tempschema);
+		return error ? error.details[0].message : null;
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(e);
+		const errors = validate();
+		console.log(errors);
+		console.log(formErrors);
+		setFormErrors(errors || {});
+
+		if (errors) return;
+		console.log("Here");
+		updateUserData(data);
+	};
+
+	const handleChange = ({ currentTarget: input }) => {
+		const errors = { ...formErrors };
+		const errorMessage = validateProperty(input);
+		if (errorMessage) {
+			errors[input.name] = errorMessage;
 		} else {
-			return (
-				<>
-					<ListItemText primary='Unlinked' />
-					<ListItemSecondaryAction>
-						<Tooltip title='Link Account' aria-label='Link Account'>
-							<IconButton onClick={buttons[provider]} edge='end' aria-label='delete'>
-								<LinkOffIcon />
-							</IconButton>
-						</Tooltip>
-					</ListItemSecondaryAction>{" "}
-				</>
-			);
+			delete errors[input.name];
 		}
+
+		const tempdata = { ...data };
+		tempdata[input.name] = input.value;
+		setData(tempdata);
+		setFormErrors(errors);
 	};
 
 	return (
-		<div className='container-xl p-5'>
-			<mwc-tab-bar style={{ marginbottom: "-1px" }} activeindex='2'>
-				<mwc-tab
-					label='Billing'
-					icon='account_balance'
-					stacked=''
-					onclick='location.href="app-account-billing.html"'
-					dir=''
-					id='mdc-tab-1'></mwc-tab>
-				<mwc-tab
-					label='Notifications'
-					icon='notifications'
-					stacked=''
-					onclick='location.href="app-account-notifications.html"'
-					dir=''
-					id='mdc-tab-2'></mwc-tab>
-				<mwc-tab
-					label='Profile'
-					icon='person'
-					stacked=''
-					onclick='location.href="app-account-profile.html"'
-					dir=''
-					id='mdc-tab-3'
-					active=''></mwc-tab>
-				<mwc-tab label='Security' icon='security' stacked='' onclick='location.href="app-account-security.html"' dir='' id='mdc-tab-4'></mwc-tab>
-			</mwc-tab-bar>
-
-			<hr className='mt-0 mb-5' />
-
-			<div className='row gx-5'>
-				<div className='col-xl-4'>
-					<div className='card card-raised mb-5'>
-						<div className='card-body p-5'>
-							<div className='card-title'>Profile Image</div>
-							<div className='card-subtitle mb-4'>This image will be publicly visible to other users.</div>
-							<div className='text-center'>
-								<img src={user.user.photoURL} alt='Admin' className='rounded-circle' width='150' />
-
-								<div className='caption fst-italic text-muted mb-4'>JPG or PNG no larger than 5 MB</div>
-
-								<button className='btn btn-primary mdc-ripple-upgraded' type='button'>
-									Upload new image
-									<i className='material-icons trailing-icon'>upload</i>
-								</button>
-							</div>
-						</div>
-
-						<div style={{ width: "100%" }}>
-							<List style={{ width: "100%" }}>
-								<ListItem>
-									<FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={fa.faGoogle} />
-									{doesAccountExist("google")}
-								</ListItem>
-								<ListItem>
-									<FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={fa.faTwitter} />
-									{doesAccountExist("twitter")}
-								</ListItem>
-								<ListItem>
-									<FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={fa.faGithub} />
-									{doesAccountExist("github")}
-								</ListItem>
-							</List>
-						</div>
-					</div>
+		<>
+			<div className='mb-4'>
+				{" "}
+				<div key={data.username}>
+					<InputFrom
+						name={"username"}
+						label={"Username"}
+						type={"text"}
+						variant={"filled"}
+						onChange={handleChange}
+						error={formErrors["username"]}
+						autoFocus={true}
+						defaultValue={data.username || ""}
+					/>
 				</div>
-
-				<div className='col-xl-8'>
-					<div className='card card-raised mb-5'>
-						<div className='card-body p-5'>
-							<div className='card-title'>Account Details</div>
-							<div className='card-subtitle mb-4'>Review and update your account information below.</div>
-							<form>
-								<UserInfoForm userData={userData} />
-							</form>
-						</div>
+			</div>
+			<div className='row mb-4'>
+				<div className='col-md-12'>
+					<div key={data.email}>
+						<InputFrom
+							name={"email"}
+							label={"Email"}
+							type={"text"}
+							variant={"filled"}
+							onChange={handleChange}
+							error={formErrors["email"]}
+							autoFocus={true}
+							defaultValue={data.email || ""}
+						/>
 					</div>
 				</div>
 			</div>
-		</div>
+			<div className='row mb-4'>
+				<div className='col-md-6'>
+					<div key={data.firstname}>
+						<InputFrom
+							name={"firstname"}
+							label={"First Name"}
+							type={"text"}
+							variant={"filled"}
+							onChange={handleChange}
+							error={formErrors["firstname"]}
+							autoFocus={true}
+							defaultValue={data.firstname || ""}
+						/>
+					</div>
+				</div>
+
+				<div className='col-md-6'>
+					<div key={data.lastname}>
+						<InputFrom
+							name={"lastname"}
+							label={"Last Name"}
+							type={"text"}
+							variant={"filled"}
+							onChange={handleChange}
+							error={formErrors["lastname"]}
+							autoFocus={true}
+							defaultValue={data.lastname || ""}
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div className='text-end'>
+				<button disabled={validate()} onClick={(e) => handleSubmit(e)} className='btn btn-primary mdc-ripple-upgraded'>
+					Save changes
+				</button>
+			</div>
+		</>
 	);
 };
 
-export default UserInfoPage;
+export default UserInfoForm;
 
 {
 	/*
@@ -389,5 +351,5 @@ export default UserInfoPage;
           </div>
         </div>
       </div>
-    </div> */
+</div> */
 }

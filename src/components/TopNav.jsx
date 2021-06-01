@@ -15,10 +15,7 @@ class TopNav extends Component {
     const auth = firebase.auth()
     auth.signOut()
   }
-  handleDropdownToggle = () => {
-    console.log('clicked')
-    this.setState({ dropdownToggled: !this.state.dropdownToggled })
-  }
+  
   render() {
     return (
       <UserConsumer>
@@ -28,7 +25,7 @@ class TopNav extends Component {
               <button
                 className="btn btn-lg btn-icon order-1 order-lg-0"
                 id="drawerToggle"
-                onClick={() => this.props.onToggle(this.props.nav)}
+                onClick={() => this.props.onNavToggle()}
               >
                 <FontAwesomeIcon icon={fa.faBars} />
               </button>
@@ -53,15 +50,15 @@ class TopNav extends Component {
                   <div className="dropdown">
                     <button
                       className={
-                        this.state.dropdownToggled === false
+                        this.props.dropdownToggled === false
                           ? 'btn btn-lg btn-icon dropdown-toggle'
                           : 'btn btn-lg btn-icon dropdown-toggle show'
                       }
-                      onClick={this.handleDropdownToggle}
+                      onClick={()=>this.props.onDropdownToggle()}
                       id="dropdownMenuProfile"
                       type="button"
                       data-bs-toggle="dropdown"
-                      aria-expanded={this.state.dropdownToggled}
+                      aria-expanded={this.props.dropdownToggled}
                     >
                       <img
                         style={{ width: '50px' }}
@@ -82,7 +79,7 @@ class TopNav extends Component {
 
                     <ul
                       className={
-                        this.state.dropdownToggled === false
+                        this.props.dropdownToggled === false
                           ? 'dropdown-menu dropdown-menu-end mt-3'
                           : 'dropdown-menu dropdown-menu-end mt-3 show'
                       }

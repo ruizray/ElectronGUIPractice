@@ -25445,3 +25445,24 @@ pre[class*=language-] {
   display: table;
 }
 
+.message {
+  display: flex;
+  align-items: center;
+}
+
+.sent {
+  flex-direction: row-reverse;
+}
+div.message.sent > span {
+  color:red;
+} 
+
+.sent p {
+  color: white;
+  background: #0b93f6;
+  align-self: flex-end;
+}
+.received p {
+  background: #e5e5ea;
+  color: black;
+}

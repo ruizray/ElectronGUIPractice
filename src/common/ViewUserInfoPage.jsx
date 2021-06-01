@@ -1,14 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as fa from "@fortawesome/free-brands-svg-icons";
 import UserContext from "../contexts/UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { linkTwitter,  getProviderPhoto, linkGoogle, linkGithub, unlinkProvider } from "../scripts/firebase";
-import UserInfoForm from "../components/UserInfoForm";
+
+import ViewUserInfoForm from "./ViewUserInfoForm";
 import firebase from "firebase";
 import "firebase/firestore";
-import { auth } from "./../scripts/firebase";
-import { List, ListItem, ListItemSecondaryAction, ListItemText, Tooltip } from "@material-ui/core";
 
+import { List, ListItem, ListItemSecondaryAction, ListItemText, Tooltip } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 
 import PhotoIcon from "@material-ui/icons/Photo";
@@ -16,22 +16,22 @@ import PhotoIcon from "@material-ui/icons/Photo";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-
-const UserInfoPage = () => {
-	const user = useContext(UserContext);
+const ViewUserInfoPage = () => {
 	const [userData, setUserData] = useState({});
-  const [socialsData, setSocialsData]= useState({});
+	const [socialsData, setSocialsData] = useState({});
+	const user = useContext(UserContext);
+	let location = useLocation();
+	console.log(location.userProps);
+	let userId = location.userProps;
+	console.log(userId.userID);
+
 	useEffect(() => {
 		let ignore = false;
 		const getdata = async () => {
-			if (auth.currentUser == null) {
-				return;
-			}
-
-			const uid = auth.currentUser.uid;
-			var results = await firebase.firestore().collection("users").doc(uid).get();
+			var results = await firebase.firestore().collection("users").doc(userId.userID).get();
+			console.log(results);
 			if (!results) {
-				firebase.firestore().collection("users").doc(uid).set({
+				firebase.firestore().collection("users").doc(userId.userID).set({
 					userName: "",
 				});
 			}
@@ -39,63 +39,83 @@ const UserInfoPage = () => {
 			const data = results.data();
 			console.log(data);
 			const obj = {
-				username: data.userName,
+				username: data.userName || "",
 				email: data.email || "",
-				firstname: data.firstName,
-				lastname: data.lastName,
+				firstname: data.firstName || "",
+				lastname: data.lastName || "",
+				profilePhoto: data.profilePhoto || "",
 			};
-			if (!ignore){
-        setUserData(obj);
-        setSocialsData(data.socials)
-      } 
+			if (!ignore) {
+				setUserData(obj);
+				setSocialsData(data.socials);
+			}
 		};
 
 		getdata();
 		return () => {
 			ignore = true;
 		};
-	},[]);
-	const buttons = {
-		"google.com": linkGoogle,
-		"twitter.com": linkTwitter,
-		"github.com": linkGithub,
+	}, []);
+
+	const icons = {
+		google: fa.faGoogle,
+		twitter: fa.faTwitter,
+		github: fa.faGithub,
+    instagram : fa.faInstagram
 	};
 
-	const doesAccountExist = (provider) => {
-const info = socialsData[provider]
+	const renderLists = () => {
+    console.log(socialsData)
 
-		if (info) {console.log(info.profilePhoto)
-			return (
-				<>
-					<ListItemText primary={info.username} secondary='Linked' />
-					<ListItemSecondaryAction>
-						<Tooltip title='Unlink' aria-label='Unlink'>
-							<IconButton onClick={() => unlinkProvider(provider)} edge='end' aria-label='delete'>
-								<DeleteIcon />
-							</IconButton>
-						</Tooltip>
-						<Tooltip title='Use Profile Picture' aria-label='Use Profile Picture'>
-							<IconButton onClick={() => getProviderPhoto( info.profilePhoto) } edge='end' aria-label='delete'>
-								<PhotoIcon />
-							</IconButton>
-						</Tooltip>
-					</ListItemSecondaryAction>{" "}
-				</>
-			);
-		} else {
-			return (
-				<>
-					<ListItemText primary='Unlinked' />
-					<ListItemSecondaryAction>
-						<Tooltip title='Link Account' aria-label='Link Account'>
-							<IconButton onClick={buttons[provider]} edge='end' aria-label='delete'>
-								<LinkOffIcon />
-							</IconButton>
-						</Tooltip>
-					</ListItemSecondaryAction>{" "}
-				</>
-			);
-		}
+		return Object.keys(socialsData).map((key, value) => {
+      return(
+        <ListItem>
+        <FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={icons[key]} />
+        <ListItemText primary={socialsData[key].username} />
+
+			
+			</ListItem>
+      )
+			
+      });
+		// obj = {}
+		//   for (const [key, value] of Object.entries(socialsData)) {
+		//     console.log(`${key}: ${value.profilePhoto}`);
+		//   }
+	};
+	const doesAccountExist = (provider) => {
+		// if (data !== -1) {
+		// 	return (
+		// 		<>
+		// 			<ListItemText />
+		// 			<ListItemSecondaryAction>
+		// 				<Tooltip >
+		// 					<IconButton >
+		// 						<DeleteIcon />
+		// 					</IconButton>
+		// 				</Tooltip>
+		// 				<Tooltip title='Use Profile Picture' aria-label='Use Profile Picture'>
+		// 					<IconButton>
+		// 						<PhotoIcon />
+		// 					</IconButton>
+		// 				</Tooltip>
+		// 			</ListItemSecondaryAction>{" "}
+		// 		</>
+		// 	);
+		// } else {
+		// 	return (
+		// 		<>
+		// 			<ListItemText primary='Unlinked' />
+		// 			<ListItemSecondaryAction>
+		// 				<Tooltip title='Link Account' aria-label='Link Account'>
+		// 					<IconButton  edge='end' aria-label='delete'>
+		// 						<LinkOffIcon />
+		// 					</IconButton>
+		// 				</Tooltip>
+		// 			</ListItemSecondaryAction>{" "}
+		// 		</>
+		// 	);
+		// }
 	};
 
 	return (
@@ -135,7 +155,7 @@ const info = socialsData[provider]
 							<div className='card-title'>Profile Image</div>
 							<div className='card-subtitle mb-4'>This image will be publicly visible to other users.</div>
 							<div className='text-center'>
-								<img src={user.user.photoURL} alt='Admin' className='rounded-circle' width='150' />
+								<img src={userData.profilePhoto} alt='Admin' className='rounded-circle' width='150' />
 
 								<div className='caption fst-italic text-muted mb-4'>JPG or PNG no larger than 5 MB</div>
 
@@ -148,18 +168,19 @@ const info = socialsData[provider]
 
 						<div style={{ width: "100%" }}>
 							<List style={{ width: "100%" }}>
-								<ListItem>
+								{renderLists()}
+								{/* <ListItem>
 									<FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={fa.faGoogle} />
-									{doesAccountExist("google")}
+									{doesAccountExist("google.com")}
 								</ListItem>
 								<ListItem>
 									<FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={fa.faTwitter} />
-									{doesAccountExist("twitter")}
+									{doesAccountExist("twitter.com")}
 								</ListItem>
 								<ListItem>
 									<FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={fa.faGithub} />
-									{doesAccountExist("github")}
-								</ListItem>
+									{doesAccountExist("github.com")}
+								</ListItem> */}
 							</List>
 						</div>
 					</div>
@@ -171,7 +192,7 @@ const info = socialsData[provider]
 							<div className='card-title'>Account Details</div>
 							<div className='card-subtitle mb-4'>Review and update your account information below.</div>
 							<form>
-								<UserInfoForm userData={userData} />
+								<ViewUserInfoForm userData={userData} />
 							</form>
 						</div>
 					</div>
@@ -181,8 +202,7 @@ const info = socialsData[provider]
 	);
 };
 
-export default UserInfoPage;
-
+export default ViewUserInfoPage;
 {
 	/*
 <div className="mx-4 my-4">
