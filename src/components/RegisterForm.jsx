@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import Joi from "joi-browser";
-import Form from "../common/Form";
-import firebase from "firebase";
 import InputFrom from "../common/Input";
 import { signUpWithEmailPassword } from "./../scripts/firebase";
 

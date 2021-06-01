@@ -5,7 +5,7 @@ import "firebase/auth";
 import { useRef, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { firestore, auth } from "../../scripts/firebase";
-import { Card, CardHeader, CardContent, CardActionArea, ListItem, ListItemAvatar, Avatar, ListItemText, List, Divider } from "@material-ui/core";
+import { Card, CardHeader, CardContent, CardActionArea, ListItem, ListItemAvatar, Avatar, ListItemText, List } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 const ChatRoom = () => {
 	const dummy = useRef();

@@ -54,7 +54,7 @@ class GoogleAuth extends Component {
 	};
 
 	init = () => {
-		//(2)
+	
 		this.checkSignedIn()
 			.then((signedIn) => {
 				if (signedIn === false) {

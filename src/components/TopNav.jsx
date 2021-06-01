@@ -30,19 +30,20 @@ class TopNav extends Component {
                 <FontAwesomeIcon icon={fa.faBars} />
               </button>
 
-              <a className="navbar-brand me-auto">
+              <NavLink to='/analytics' className="navbar-brand me-auto">
                 <div className="text-uppercase font-monospace">
                   Material Admin Pro
-                </div>
-              </a>
+                  </div>
+                </NavLink>
+             
 
               <div className="d-flex align-items-center mx-3 me-lg-0">
                 <ul className="navbar-nav d-none d-lg-flex">
                   <li className="nav-item">
-                    <a className="nav-link">Overview</a>
+                  <NavLink to='/analytics'>Overview</NavLink>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link">Documentation</a>
+                  <NavLink to='/analytics'>Documentation</NavLink>
                   </li>
                 </ul>
 

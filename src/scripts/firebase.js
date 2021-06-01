@@ -13,6 +13,7 @@ const firebaseAppConfig = {
 if (!firebase.apps.length) {
 	firebase.initializeApp(firebaseAppConfig);
 }
+console.log("firebase script called")
 
 export var auth = firebase.auth();
 export var twitterProvider = new firebase.auth.TwitterAuthProvider();
@@ -154,6 +155,7 @@ export function updateUserData(data) {
 				firstName: firstname,
 				lastName: lastname,
 				userName: username,
+                email: email,
 			};
 			userRef.set(obj, { merge: true });
 		})
@@ -191,15 +193,11 @@ export function signInWithEmailPassword(email, password) {
 		.auth()
 		.signInWithEmailAndPassword(email, password)
 		.then((userCredential) => {
-			// Signed in
-			console.log(userCredential)
-			var user = userCredential.user;
-			// ...
+		
 		})
 		.catch((error) => {
 			alert(error)
-			var errorCode = error.code;
-			var errorMessage = error.message;
+			
 		});
 }
 

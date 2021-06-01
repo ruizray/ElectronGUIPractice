@@ -89,9 +89,7 @@ const DataRequestForm = (props) => {
 						Print Data
 					</button>
 
-					{/* {this.renderButton("Send Request")}
-
-					{this.renderDownloadButton("Print Data")} */}
+					
 				</Card>
 			</form>
 		</React.Fragment>
