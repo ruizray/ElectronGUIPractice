@@ -61,23 +61,20 @@ const ViewUserInfoPage = () => {
 		google: fa.faGoogle,
 		twitter: fa.faTwitter,
 		github: fa.faGithub,
-    instagram : fa.faInstagram
+		instagram: fa.faInstagram,
 	};
 
 	const renderLists = () => {
-    console.log(socialsData)
+		console.log(socialsData);
 
 		return Object.keys(socialsData).map((key, value) => {
-      return(
-        <ListItem>
-        <FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={icons[key]} />
-        <ListItemText primary={socialsData[key].username} />
-
-			
-			</ListItem>
-      )
-			
-      });
+			return (
+				<ListItem>
+					<FontAwesomeIcon style={{ marginRight: "1rem" }} size='2x' icon={icons[key]} />
+					<ListItemText primary={socialsData[key].username} />
+				</ListItem>
+			);
+		});
 		// obj = {}
 		//   for (const [key, value] of Object.entries(socialsData)) {
 		//     console.log(`${key}: ${value.profilePhoto}`);

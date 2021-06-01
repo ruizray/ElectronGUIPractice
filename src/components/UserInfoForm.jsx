@@ -16,13 +16,13 @@ const UserInfoForm = props => {
 		email: Joi.string().required().label("Email"),
 	};
 
-	const [data, setData] = useState(props.userData);
+	const [data, setData] = useState({username:""});
 	const [formErrors, setFormErrors] = useState({});
 
 	useEffect(() => {
     console.log("Getting")
 		setData(props.userData)
-	});
+	},[props.userData]);
 
 	const validate = () => {
 		const options = { abortEarly: false, allowUnknown: true };
