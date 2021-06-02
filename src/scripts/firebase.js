@@ -1,5 +1,5 @@
 import firebase from "firebase";
-
+import "firebase/storage"
 const firebaseAppConfig = {
 	apiKey: "AIzaSyAU8YtFNTgL7v37WUW-ElF7VbAw0l-yOHo",
 	authDomain: "react-fc0a1.firebaseapp.com",
@@ -13,9 +13,10 @@ const firebaseAppConfig = {
 if (!firebase.apps.length) {
 	firebase.initializeApp(firebaseAppConfig);
 }
-console.log("firebase script called")
+console.log("firebase script called");
 
 export var auth = firebase.auth();
+var storageRef = firebase.storage().ref()
 export var twitterProvider = new firebase.auth.TwitterAuthProvider();
 export var googleProvider = new firebase.auth.GoogleAuthProvider();
 export var githubProvider = new firebase.auth.GithubAuthProvider();
@@ -96,21 +97,19 @@ export function linkGoogle() {
 		});
 }
 
-export function getProviderPhoto( newPhoto) {
+export function getProviderPhoto(newPhoto) {
 	var user = firebase.auth().currentUser;
 
-console.log(newPhoto)
-	user.updateProfile({ photoURL: newPhoto} || {photoURL : user.photoURL })
+	console.log(newPhoto);
+	user.updateProfile({ photoURL: newPhoto } || { photoURL: user.photoURL })
 		.then(function () {
-			firestore.collection("users").doc(user.uid).set({profilePhoto : newPhoto}, { merge: true });
+			firestore.collection("users").doc(user.uid).set({ profilePhoto: newPhoto }, { merge: true });
 			alert("Successfully changed profile picture");
 		})
 		.catch(function (error) {
 			console.log(error);
 		});
 }
-
-
 
 export function enablePersistence() {
 	firebase
@@ -155,7 +154,7 @@ export function updateUserData(data) {
 				firstName: firstname,
 				lastName: lastname,
 				userName: username,
-                email: email,
+				email: email,
 			};
 			userRef.set(obj, { merge: true });
 		})
@@ -167,8 +166,8 @@ export function updateUserData(data) {
 export function signInWithGoogle() {
 	auth.signInWithPopup(googleProvider)
 		.then((result) => {
-			var uid = result.user.uid
-			console.log(uid, result)
+			var uid = result.user.uid;
+			console.log(uid, result);
 			var obj = {
 				socials: {
 					google: {
@@ -179,9 +178,8 @@ export function signInWithGoogle() {
 					},
 				},
 			};
-			console.log(obj)
+			console.log(obj);
 			firestore.collection("users").doc(uid).set(obj, { merge: true });
-			
 		})
 		.catch((error) => {
 			alert(error);
@@ -192,37 +190,37 @@ export function signInWithEmailPassword(email, password) {
 	firebase
 		.auth()
 		.signInWithEmailAndPassword(email, password)
-		.then((userCredential) => {
-		
-		})
+		.then((userCredential) => {})
 		.catch((error) => {
-			alert(error)
-			
+			alert(error);
 		});
 }
 
-export function signUpWithEmailPassword(data){
-	const {email, firstName, lastName, username, password } = data
-	console.log(data)
+export function signUpWithEmailPassword(data) {
+	const { email, firstName, lastName, username, password } = data;
+	console.log(data);
 	firebase
 		.auth()
 		.createUserWithEmailAndPassword(email, password)
 		.then((result) => {
-			var uid = result.user.uid
+			var uid = result.user.uid;
 			// Signed in
 			var obj = {
 				email: email,
-				firstName : firstName,
-				lastName : lastName,
+				firstName: firstName,
+				lastName: lastName,
 				userName: username,
-
 			};
-			console.log(obj)
+			console.log(obj);
 			firestore.collection("users").doc(uid).set(obj, { merge: true });
 			// ...
 		})
 		.catch((error) => {
-			alert(error)
-
+			alert(error);
 		});
+}
+
+export function uploadUserPhoto(file){
+	var profilePhotoRef = storageRef.child('profilePhoto.jpg')
+
 }
