@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import Joi from "joi-browser";
-
 import GoogleAuth from "../GoogleAuth";
-
-
 import { Card, CardHeader, CardContent} from "@material-ui/core";
 import InputFrom from "../../common/Input";
 
@@ -12,7 +9,7 @@ const DataRequestForm = (props) => {
 		pagecount: Joi.number().greater(0).less(100).required(),
 	};
 
-	const [data, setData] = useState({ pagecount: "" });
+	const [data, setData] = useState({ pagecount: 0 });
 	const [formErrors, setFormErrors] = useState({});
 
 	const validate = () => {

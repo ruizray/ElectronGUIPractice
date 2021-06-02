@@ -13,7 +13,7 @@ import ChatRoom from "../common/Chat/Chatroom";
 
 import UserContext, { UserConsumer } from "../contexts/UserContext";
 import UserInfoPage from "../common/UserInfoPage";
-import ViewUserInfoPage from './../common/ViewUserInfoPage';
+import ViewUserInfoPage from "./../common/ViewUserInfoPage";
 
 class Dashboard extends Component {
 	state = {
@@ -109,14 +109,13 @@ class Dashboard extends Component {
 										<Route exact path='/movies' component={Movies} />
 										<Route path='/stuff' component={Stuff} />
 										<Route path='/counter' component={Counter} />
-						
+
 										<Route path='/analytics' render={(props) => <Analytics userinfo={this.state.user} />} />
 										<Route exact path='/userInfo' component={UserInfoPage} />
 										<Route path='/chatroom' component={ChatRoom} />
 										<Route path='/database' component={Database} />
 										<Route path='/privacyPolicy' component={PrivacyPolicy} />
-                    <Route exact path='/viewuser' component={ViewUserInfoPage}/>
-										
+										<Route exact path='/viewuser' component={ViewUserInfoPage} />
 									</main>
 
 									<footer className='py-4 mt-auto border-top' style={{ minheight: "74px" }}>
@@ -147,4 +146,3 @@ class Dashboard extends Component {
 
 Dashboard.contextType = UserContext;
 export default Dashboard;
-

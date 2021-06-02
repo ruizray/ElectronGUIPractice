@@ -5,7 +5,7 @@ import "firebase/auth";
 import { useRef, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { firestore, auth } from "../../scripts/firebase";
-import { Card, CardHeader, CardContent, CardActionArea, ListItem, ListItemAvatar, Avatar, ListItemText, List } from "@material-ui/core";
+import { Card, CardHeader, CardContent, ListItem, ListItemAvatar, Avatar, ListItemText, List } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 const ChatRoom = () => {
 	const dummy = useRef();
@@ -29,7 +29,7 @@ const ChatRoom = () => {
 	return (
 		<>
 			<div className='container mt-5'>
-				<div class='row gx-5' style={{ placeContent: "center" }}>
+				<div className='row gx-5' style={{ placeContent: "center" }}>
 					<div className='col-xl-5'>
 						<Card>
 							<CardHeader className='card-header bg-dark text-white' title='Chat Room'></CardHeader>
@@ -46,10 +46,10 @@ const ChatRoom = () => {
 									<span ref={dummy}></span>
 								</List>
 							</CardContent>
-							<CardActionArea>
+				
 								<form onSubmit={sendMessage}>
 									{" "}
-									<div style={{ height: "3rem" }} class='input-group '>
+									<div style={{ height: "3rem" }} className='input-group '>
 										<input
 											className='form-control'
 											style={{
@@ -63,7 +63,7 @@ const ChatRoom = () => {
 											onChange={(e) => setFormValue(e.target.value)}
 											placeholder='say something nice'
 										/>
-										<div class='input-group-append'>
+										<div className='input-group-append'>
 											<button
 												style={{
 													height: "100%",
@@ -80,7 +80,7 @@ const ChatRoom = () => {
 										</div>
 									</div>
 								</form>
-							</CardActionArea>
+					
 						</Card>
 					</div>
 				</div>

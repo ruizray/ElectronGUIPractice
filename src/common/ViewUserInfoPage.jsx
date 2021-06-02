@@ -115,10 +115,7 @@ const ViewUserInfoPage = () => {
 
 								<div className='caption fst-italic text-muted mb-4'>JPG or PNG no larger than 5 MB</div>
 
-								<button className='btn btn-primary mdc-ripple-upgraded' type='button'>
-									Upload new image
-									<i className='material-icons trailing-icon'>upload</i>
-								</button>
+								
 							</div>
 						</div>
 

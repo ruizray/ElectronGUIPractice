@@ -46,6 +46,7 @@ class Analytics extends Component {
 				"Request is missing required authentication credential\nExpected OAuth 2 access token, login cookie or other valid authentication credential."
 			);
 		}
+		console.log(response)
 		//message: "Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project."
 	};
 

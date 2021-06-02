@@ -40,10 +40,10 @@ class TopNav extends Component {
               <div className="d-flex align-items-center mx-3 me-lg-0">
                 <ul className="navbar-nav d-none d-lg-flex">
                   <li className="nav-item">
-                  <NavLink to='/analytics'>Overview</NavLink>
+                  <NavLink className="nav-link" to='/analytics'>Overview</NavLink>
                   </li>
                   <li className="nav-item">
-                  <NavLink to='/analytics'>Documentation</NavLink>
+                  <NavLink  className="nav-link" to='/analytics'>Documentation</NavLink>
                   </li>
                 </ul>
 
